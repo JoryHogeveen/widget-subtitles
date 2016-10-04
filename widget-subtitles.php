@@ -85,8 +85,8 @@ final class Widget_Subtitles {
 	 * @return	void
 	 */
 	public function init() {
-		add_action( 'plugins_loaded', array( $this, 'load_plugin_textdomain' ) );
-		add_action( 'in_widget_form', array( $this, 'in_widget_form'), 9, 3 ); 
+		add_action( 'init', array( $this, 'load_plugin_textdomain' ) );
+		add_action( 'in_widget_form', array( $this, 'in_widget_form'), 9, 3 );
 		add_filter( 'widget_update_callback', array( $this, 'widget_update_callback' ), 10, 4 );
 		add_filter( 'dynamic_sidebar_params', array( $this, 'dynamic_sidebar_params' ) );
 	}
