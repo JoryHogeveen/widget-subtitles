@@ -41,7 +41,7 @@ final class Widget_Subtitles {
 	 * @var 	string
 	 */
 	private $locations = array();
-	
+
 	/**
 	 * PHP5 constructor that calls specific hooks within WordPress
 	 *
@@ -60,7 +60,7 @@ final class Widget_Subtitles {
 
 		add_action( 'init', array( $this, 'init' ) );
 	}
-	
+
 	/**
 	 * Main Genesis Widget Subtitles.
 	 *
@@ -93,6 +93,7 @@ final class Widget_Subtitles {
 
 	/**
 	 * Load the plugin's translated strings
+	 * @since  0.1
 	 */
 	function load_plugin_textdomain() {
 		load_plugin_textdomain( 'widget-subtitles', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
@@ -100,6 +101,11 @@ final class Widget_Subtitles {
 
 	/**
      * Add a subtitle input field into the form
+     * @since  0.1
+     *
+     * @param  object  $widget  WP_Widget
+     * @param  null    $return
+     * @param  array   $instance
      */
 	function in_widget_form( $widget, $return, $instance ) {
 
@@ -108,26 +114,26 @@ final class Widget_Subtitles {
 		?>
 
 		<p>
-			<label for="<?php echo $widget->get_field_id( 'subtitle' ) ?>"><?php _e( 'Subtitle', 'widget-subtitles' ); ?>:</label> 
+			<label for="<?php echo $widget->get_field_id( 'subtitle' ) ?>"><?php _e( 'Subtitle', 'widget-subtitles' ); ?>:</label>
 			<input class="widefat" id="<?php echo $widget->get_field_id( 'subtitle' ) ?>" name="<?php echo $widget->get_field_name( 'subtitle' ); ?>" type="text" value="<?php echo esc_attr( strip_tags( $instance['subtitle'] ) ); ?>"/>
 		</p>
 
 		<p>
-			<label for="<?php echo $widget->get_field_id( 'subtitle_location' ) ?>"><?php _e('Subtitle location', 'widget-subtitles') ?>:</label> 
+			<label for="<?php echo $widget->get_field_id( 'subtitle_location' ) ?>"><?php _e('Subtitle location', 'widget-subtitles') ?>:</label>
 			<select name=<?php echo $widget->get_field_name( 'subtitle_location' ); ?>" id="<?php echo $widget->get_field_id( 'subtitle_location' ) ?>">
-			<?php 
+			<?php
 				foreach ( $this->locations as $locationKey => $locationName ) {
 					?>
 					<option value="<?php echo $locationKey ?>" <?php selected( $instance['subtitle_location'], $locationKey, true ) ?>><?php echo $locationName ?></option>
 					<?php
 				}
 			?>
-			</select> 
+			</select>
 		</p>
 
         <script type="text/javascript">
-			;(function($){ 
-				// show/hide subtitla location if no value is 
+			;(function($){
+				// show/hide subtitle location input
 				if ( '' == $('#<?php echo $widget->get_field_id( 'subtitle' ) ?>').val() ) {
 					$('#<?php echo $widget->get_field_id( 'subtitle_location' ) ?>').parent().hide();
 				}
@@ -151,30 +157,44 @@ final class Widget_Subtitles {
 
 	/**
      * Filter the widget’s settings before saving, return false to cancel saving (keep the old settings if updating).
+     *
+     * @since  0.1
+     *
+     * @param  array  $instance
+     * @param  array  $new_instance
+     * @param  array  $old_instance
+     * @param  object $widget  WP_Widget
+     *
+     * @return array
      */
 	function widget_update_callback( $instance, $new_instance, $old_instance, $widget ) {
 
 		// Subtitle
 		if ( isset( $new_instance['subtitle'] ) ) {
 			$instance['subtitle'] = strip_tags( $new_instance['subtitle'] );
-		} else { 
-			$instance['subtitle'] = ''; 
+		} else {
+			$instance['subtitle'] = '';
 		}
 
 		// Subtitle location
 		if ( isset( $new_instance['subtitle_location'] ) ) {
 			$instance['subtitle_location'] = strip_tags( $new_instance['subtitle_location'] );
-		} else { 
-			$instance['subtitle_location'] = ''; 
+		} else {
+			$instance['subtitle_location'] = '';
 		}
 
 		return $instance;
 
 	}
-	
+
 	/**
      * Gets called from within the dynamic_sidebar function which displays a widget container.
      * This filter gets called for each widget instance in the sidebar.
+     *
+     * @since 0.1
+     *
+     * @param  array  $params
+     * @return array
      */
 	function dynamic_sidebar_params( $params ) {
 
@@ -186,17 +206,17 @@ final class Widget_Subtitles {
 
 		$widget_id = $params[0]['widget_id'];
 		$widget = $wp_registered_widgets[ $widget_id ];
-	
+
 		// Get instance settings
 		if ( array_key_exists( 'callback', $widget ) ) {
 
 			$instance = get_option( $widget['callback'][0]->option_name );
-		
+
 			// Check if there's an instance of the widget
 			if ( array_key_exists( $params[1]['number'], $instance ) ) {
 
 				$instance = $instance[$params[1]['number']];
-			
+
 				// Add the subtitle
 				if ( ! empty( $instance['subtitle'] ) ) {
 
@@ -252,13 +272,13 @@ final class Widget_Subtitles {
 		}
 		return $params;
 	}
-	
+
 	/**
 	 * Magic method to output a string if trying to use the object as a string.
 	 *
 	 * @since  0.1
 	 * @access public
-	 * @return void
+	 * @return string
 	 */
 	public function __toString() {
 		return get_class( $this );
@@ -310,7 +330,7 @@ final class Widget_Subtitles {
 		unset( $method, $args );
 		return null;
 	}
-	
+
 }
 
 /**
