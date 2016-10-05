@@ -3,7 +3,7 @@
  * Plugin Name: Widget Subtitles
  * Description: Add a customizable subtitle to your widgets
  * Plugin URI: http://github.com/JoryHogeveen/widget-subtitles
- * Version: 1.0
+ * Version: 1.0.1
  * Author: Jory Hogeveen
  * Author URI: http://www.keraweb.nl
  * Text Domain: widget-subtitles
@@ -32,7 +32,7 @@ final class Widget_Subtitles {
 	 * @since	0.1
 	 * @var 	string
 	 */
-	private $version = '1.0';
+	private $version = '1.0.1';
 
 	/**
 	 * Possible locations of the subtitle
