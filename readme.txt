@@ -35,7 +35,7 @@ Allows you to change the HTML element for the subtitle
 == Changelog ==
 
 = 1.0.1 =
-* Update textdomain hook
+*	Update textdomain hook
 
 = 1.0 =
 *	First version
