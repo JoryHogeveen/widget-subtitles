@@ -21,32 +21,23 @@ final class Widget_Subtitles {
 	/**
 	 * The single instance of the class.
 	 *
-	 * @since	0.1
-	 * @var		Widget_Subtitles
+	 * @since  0.1
+	 * @var	   Widget_Subtitles
 	 */
 	private static $_instance = null;
 
 	/**
-	 * Plugin version
-	 *
-	 * @since	0.1
-	 * @var 	string
-	 */
-	private $version = '1.0.1';
-
-	/**
 	 * Possible locations of the subtitle
 	 *
-	 * @since	0.1
-	 * @var 	string
+	 * @since  0.1
+	 * @var    string
 	 */
 	private $locations = array();
 
 	/**
 	 * PHP5 constructor that calls specific hooks within WordPress
 	 *
-	 * @since	0.1
-	 * @return	void
+	 * @since  0.1
 	 */
 	function __construct( ) {
 		self::$_instance = $this;
@@ -66,10 +57,10 @@ final class Widget_Subtitles {
 	 *
 	 * Ensures only one instance of Widget Subtitle is loaded or can be loaded.
 	 *
-	 * @since	0.1
+	 * @since   0.1
 	 * @static
-	 * @see		Widget_Subtitles()
-	 * @return	Genesis Widget Column Classes - Main instance.
+	 * @see     Widget_Subtitles()
+	 * @return  Widget_Subtitles
 	 */
 	public static function get_instance() {
 		if ( is_null( self::$_instance ) ) {
@@ -81,8 +72,8 @@ final class Widget_Subtitles {
 	/**
 	 * Init function/action and register all used hooks
 	 *
-	 * @since	0.1
-	 * @return	void
+	 * @since   0.1
+	 * @return  void
 	 */
 	public function init() {
 		add_action( 'init', array( $this, 'load_plugin_textdomain' ) );
@@ -97,16 +88,16 @@ final class Widget_Subtitles {
 	 */
 	function load_plugin_textdomain() {
 		load_plugin_textdomain( 'widget-subtitles', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
-    }
+	}
 
 	/**
-     * Add a subtitle input field into the form
-     * @since  0.1
-     *
-     * @param  object  $widget  WP_Widget
-     * @param  null    $return
-     * @param  array   $instance
-     */
+	 * Add a subtitle input field into the form
+	 * @since  0.1
+	 *
+	 * @param  object  $widget  WP_Widget
+	 * @param  null    $return
+	 * @param  array   $instance
+	 */
 	function in_widget_form( $widget, $return, $instance ) {
 
 		$instance = wp_parse_args( (array) $instance, array( 'subtitle' => '', 'subtitle_location' => '' ) );
@@ -122,16 +113,16 @@ final class Widget_Subtitles {
 			<label for="<?php echo $widget->get_field_id( 'subtitle_location' ) ?>"><?php _e('Subtitle location', 'widget-subtitles') ?>:</label>
 			<select name=<?php echo $widget->get_field_name( 'subtitle_location' ); ?>" id="<?php echo $widget->get_field_id( 'subtitle_location' ) ?>">
 			<?php
-				foreach ( $this->locations as $locationKey => $locationName ) {
-					?>
-					<option value="<?php echo $locationKey ?>" <?php selected( $instance['subtitle_location'], $locationKey, true ) ?>><?php echo $locationName ?></option>
-					<?php
-				}
+			foreach ( $this->locations as $locationKey => $locationName ) {
+				?>
+				<option value="<?php echo $locationKey ?>" <?php selected( $instance['subtitle_location'], $locationKey, true ) ?>><?php echo $locationName ?></option>
+				<?php
+			}
 			?>
 			</select>
 		</p>
 
-        <script type="text/javascript">
+		<script type="text/javascript">
 			;(function($){
 				// show/hide subtitle location input
 				if ( '' == $('#<?php echo $widget->get_field_id( 'subtitle' ) ?>').val() ) {
@@ -152,21 +143,21 @@ final class Widget_Subtitles {
 			})( jQuery );
 		</script>
 
-	<?php
+		<?php
 	}
 
 	/**
-     * Filter the widget’s settings before saving, return false to cancel saving (keep the old settings if updating).
-     *
-     * @since  0.1
-     *
-     * @param  array  $instance
-     * @param  array  $new_instance
-     * @param  array  $old_instance
-     * @param  object $widget  WP_Widget
-     *
-     * @return array
-     */
+	 * Filter the widget’s settings before saving, return false to cancel saving (keep the old settings if updating).
+	 *
+	 * @since  0.1
+	 *
+	 * @param  array  $instance
+	 * @param  array  $new_instance
+	 * @param  array  $old_instance
+	 * @param  object $widget  WP_Widget
+	 *
+	 * @return array
+	 */
 	function widget_update_callback( $instance, $new_instance, $old_instance, $widget ) {
 
 		// Subtitle
@@ -188,14 +179,14 @@ final class Widget_Subtitles {
 	}
 
 	/**
-     * Gets called from within the dynamic_sidebar function which displays a widget container.
-     * This filter gets called for each widget instance in the sidebar.
-     *
-     * @since 0.1
-     *
-     * @param  array  $params
-     * @return array
-     */
+	 * Gets called from within the dynamic_sidebar function which displays a widget container.
+	 * This filter gets called for each widget instance in the sidebar.
+	 *
+	 * @since  0.1
+	 *
+	 * @param  array  $params
+	 * @return array
+	 */
 	function dynamic_sidebar_params( $params ) {
 
 		global $wp_registered_widgets;
@@ -319,6 +310,8 @@ final class Widget_Subtitles {
 	 *
 	 * @since  0.1
 	 * @access public
+	 * @param  string $method
+	 * @param  array  $args
 	 * @return null
 	 */
 	public function __call( $method = '', $args = array() ) {
@@ -338,8 +331,8 @@ final class Widget_Subtitles {
  *
  * Returns the main instance of Widget_Subtitles to prevent the need to use globals.
  *
- * @since	0.1
- * @return 	Widget_Subtitles
+ * @since   0.1
+ * @return  Widget_Subtitles
  */
 function Get_Widget_Subtitles() {
 	return Widget_Subtitles::get_instance();
