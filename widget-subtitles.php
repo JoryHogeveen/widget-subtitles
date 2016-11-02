@@ -230,7 +230,7 @@ final class Widget_Subtitles {
 					/**
 					 * Filters subtitle element (default: span)
 					 * @since  1.0
-					 * @since  1.1  Add third parameter for all widget data
+					 * @since  1.1  Add extra parameters
 					 *
 					 * @param  string  'span'       The Element
 					 * @param  string  $widget_id   The widget ID (widget name + instance number)
@@ -251,7 +251,7 @@ final class Widget_Subtitles {
 					/**
 					 * Allow filter for subtitle classes to overwrite, remove or add classes
 					 * @since  1.0
-					 * @since  1.1  Add third parameter for all widget data
+					 * @since  1.1  Add extra parameters
 					 *
 					 * @param  string  'span'       The Element
 					 * @param  string  $widget_id   The widget ID (widget name + instance number)
