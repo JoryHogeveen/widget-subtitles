@@ -111,7 +111,7 @@ final class Widget_Subtitles {
 
 		<p>
 			<label for="<?php echo $widget->get_field_id( 'subtitle_location' ) ?>"><?php _e('Subtitle location', 'widget-subtitles') ?>:</label>
-			<select name=<?php echo $widget->get_field_name( 'subtitle_location' ); ?>" id="<?php echo $widget->get_field_id( 'subtitle_location' ) ?>">
+			<select name="<?php echo $widget->get_field_name( 'subtitle_location' ); ?>" id="<?php echo $widget->get_field_id( 'subtitle_location' ) ?>">
 			<?php
 			foreach ( $this->locations as $locationKey => $locationName ) {
 				?>
@@ -217,8 +217,16 @@ final class Widget_Subtitles {
 						$subtitle_location = $instance['subtitle_location'];
 					}
 
-					// Filters subtitle element (default: span)
-					$subtitle_element = apply_filters( 'widget_subtitles_element', 'span', $widget_id );
+					/**
+					 * Filters subtitle element (default: span)
+					 * @since  1.0
+					 * @since  1.1  Add third parameter for all widget data
+					 *
+					 * @param  string  'span'      The Element
+					 * @param  string  $widget_id  The widget id (widget name + instance number)
+					 * @param  array   $widget     All widget data
+					 */
+					$subtitle_element = apply_filters( 'widget_subtitles_element', 'span', $widget_id, $widget );
 
 					// Create subtitle classes
 					$subtitle_classes = array( 'widget-subtitles', 'widgetsubtitle' );
@@ -228,8 +236,17 @@ final class Widget_Subtitles {
 					foreach( $subtitle_location_classes as $location ) {
 						$subtitle_classes[] = 'subtitle-' . $location;
 					}
-					// Allow filter for subtitle classes to overwrite, remove or add classes
-					$subtitle_classes = apply_filters( 'widget_subtitles_classes', $subtitle_classes, $widget_id );
+					/**
+					 * Allow filter for subtitle classes to overwrite, remove or add classes
+					 * @since  1.0
+					 * @since  1.1  Add third parameter for all widget data
+					 *
+					 * @param  array   $subtitle_classes  The default classes
+					 * @param  string  $widget_id  The widget id (widget name + instance number)
+					 * @param  array   $widget     All widget data
+					 */
+					$subtitle_classes = apply_filters( 'widget_subtitles_classes', $subtitle_classes, $widget_id, $widget );
+
 					// Create class string to use
 					$subtitle_classes = is_array( $subtitle_classes ) ? '' . implode( ' ', $subtitle_classes ) . '' : '';
 
