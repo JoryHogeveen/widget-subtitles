@@ -189,7 +189,7 @@ final class Widget_Subtitles {
 	 */
 	function dynamic_sidebar_params( $params ) {
 
-		global $wp_registered_widgets;
+		global $wp_registered_widgets, $_wp_sidebars_widgets;
 
 		if ( ! isset( $params[0]['widget_id'] ) ) {
 			return $params;
@@ -206,10 +206,20 @@ final class Widget_Subtitles {
 			// Check if there's an instance of the widget
 			if ( array_key_exists( $params[1]['number'], $instance ) ) {
 
-				$instance = $instance[$params[1]['number']];
+				$instance = $instance[ $params[1]['number'] ];
 
 				// Add the subtitle
 				if ( ! empty( $instance['subtitle'] ) ) {
+
+					$sidebar_id = '';
+					if ( is_array( $_wp_sidebars_widgets ) ) {
+						foreach ( $_wp_sidebars_widgets as $key => $widgets ) {
+							if ( in_array( $widget_id, $widgets ) ) {
+								$sidebar_id = $key;
+								break;
+							}
+						}
+					}
 
 					$subtitle_location = 'after-inside'; // default
 					// Get location value if it exists and is valid
@@ -222,11 +232,12 @@ final class Widget_Subtitles {
 					 * @since  1.0
 					 * @since  1.1  Add third parameter for all widget data
 					 *
-					 * @param  string  'span'      The Element
-					 * @param  string  $widget_id  The widget id (widget name + instance number)
-					 * @param  array   $widget     All widget data
+					 * @param  string  'span'       The Element
+					 * @param  string  $widget_id   The widget ID (widget name + instance number)
+					 * @param  string  $sidebar_id  The sitebar ID where this widget is located
+					 * @param  array   $widget      All widget data
 					 */
-					$subtitle_element = apply_filters( 'widget_subtitles_element', 'span', $widget_id, $widget );
+					$subtitle_element = apply_filters( 'widget_subtitles_element', 'span', $widget_id, $sidebar_id, $widget );
 
 					// Create subtitle classes
 					$subtitle_classes = array( 'widget-subtitles', 'widgetsubtitle' );
@@ -236,16 +247,18 @@ final class Widget_Subtitles {
 					foreach( $subtitle_location_classes as $location ) {
 						$subtitle_classes[] = 'subtitle-' . $location;
 					}
+
 					/**
 					 * Allow filter for subtitle classes to overwrite, remove or add classes
 					 * @since  1.0
 					 * @since  1.1  Add third parameter for all widget data
 					 *
-					 * @param  array   $subtitle_classes  The default classes
-					 * @param  string  $widget_id  The widget id (widget name + instance number)
-					 * @param  array   $widget     All widget data
+					 * @param  string  'span'       The Element
+					 * @param  string  $widget_id   The widget ID (widget name + instance number)
+					 * @param  string  $sidebar_id  The sitebar ID where this widget is located
+					 * @param  array   $widget      All widget data
 					 */
-					$subtitle_classes = apply_filters( 'widget_subtitles_classes', $subtitle_classes, $widget_id, $widget );
+					$subtitle_classes = apply_filters( 'widget_subtitles_classes', $subtitle_classes, $widget_id, $sidebar_id, $widget );
 
 					// Create class string to use
 					$subtitle_classes = is_array( $subtitle_classes ) ? '' . implode( ' ', $subtitle_classes ) . '' : '';
