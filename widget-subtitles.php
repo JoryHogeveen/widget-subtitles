@@ -2,13 +2,13 @@
 /**
  * Plugin Name: Widget Subtitles
  * Description: Add a customizable subtitle to your widgets
- * Plugin URI: http://github.com/JoryHogeveen/widget-subtitles
- * Version: 1.0.1
- * Author: Jory Hogeveen
- * Author URI: http://www.keraweb.nl
+ * Plugin URI:  http://github.com/JoryHogeveen/widget-subtitles
+ * Version:     1.1
+ * Author:      Jory Hogeveen
+ * Author URI:  http://www.keraweb.nl
  * Text Domain: widget-subtitles
  * Domain Path: /languages
- * License: GNU General Public License v2 or later
+ * License:     GNU General Public License v2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
 
@@ -234,7 +234,7 @@ final class Widget_Subtitles {
 					 *
 					 * @param  string  'span'       The Element
 					 * @param  string  $widget_id   The widget ID (widget name + instance number)
-					 * @param  string  $sidebar_id  The sitebar ID where this widget is located
+					 * @param  string  $sidebar_id  The sidebar ID where this widget is located
 					 * @param  array   $widget      All widget data
 					 */
 					$subtitle_element = apply_filters( 'widget_subtitles_element', 'span', $widget_id, $sidebar_id, $widget );
@@ -253,10 +253,10 @@ final class Widget_Subtitles {
 					 * @since  1.0
 					 * @since  1.1  Add extra parameters
 					 *
-					 * @param  string  'span'       The Element
-					 * @param  string  $widget_id   The widget ID (widget name + instance number)
-					 * @param  string  $sidebar_id  The sitebar ID where this widget is located
-					 * @param  array   $widget      All widget data
+					 * @param  array   $subtitle_classes  The default classes
+					 * @param  string  $widget_id         The widget ID (widget name + instance number)
+					 * @param  string  $sidebar_id        The sidebar ID where this widget is located
+					 * @param  array   $widget            All widget data
 					 */
 					$subtitle_classes = apply_filters( 'widget_subtitles_classes', $subtitle_classes, $widget_id, $sidebar_id, $widget );
 
