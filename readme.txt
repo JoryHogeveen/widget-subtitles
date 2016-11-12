@@ -3,7 +3,7 @@ Contributors: keraweb
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=YGPLMLU7XQ9E8&lc=NL&item_name=Widget%20Subtitles&item_number=JWPP%2dWS&currency_code=EUR&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHostedGuest
 Tags: widget, widget subtitle, subtitle, subtitles, sub title, sidebar
 Requires at least: 3.0
-Tested up to: 4.6
+Tested up to: 4.7
 Stable tag: 1.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
