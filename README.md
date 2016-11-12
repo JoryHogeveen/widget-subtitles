@@ -19,13 +19,21 @@ This plugin adds a subtitle input field to all your widgets. You can also change
 Allows you to change the HTML element for the subtitle
 
 *	**Default:** span
-*	**Parameters:** string (default), int (widget id)
+*	**Parameters:**
+	*	string (default)
+	*	string (widget id)
+	*	string (sidebar id)
+	*	array  (widget data)
 
 #### `widget_subtitles_classes`
 Allows you to change the HTML element for the subtitle
 
 *	**Default:** `array( 'widget-subtitle', 'widgetsubtitle', 'subtitle-LOCATION' );` Where LOCATION stands for your selected location
-*	**Parameters:** array (default classes), int (widget id)
+*	**Parameters:**
+	*	array  (default classes)
+	*	string (widget id)
+	*	string (sidebar id)
+	*	array  (widget data)
 
 ## Installation
 
