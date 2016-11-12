@@ -43,7 +43,7 @@ Allows you to change the HTML element for the subtitle
 == Changelog ==
 
 = 1.1 =
-*	Add extra perameters to the filter hooks
+*	Add extra parameters to the filter hooks
 
 = 1.0.1 =
 *	Update textdomain hook
