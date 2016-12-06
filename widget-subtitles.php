@@ -240,7 +240,7 @@ final class Widget_Subtitles {
 					$subtitle_element = apply_filters( 'widget_subtitles_element', 'span', $widget_id, $sidebar_id, $widget );
 
 					// Create subtitle classes
-					$subtitle_classes = array( 'widget-subtitles', 'widgetsubtitle' );
+					$subtitle_classes = array( 'widget-subtitle', 'widgetsubtitle' );
 					// Add subtitle location classes
 					$subtitle_classes[] = 'subtitle-' . $subtitle_location;
 					$subtitle_location_classes = explode( '-', $subtitle_location );
