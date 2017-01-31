@@ -191,12 +191,12 @@ final class WS_Widget_Subtitles {
 	 *
 	 * @since  0.1
 	 *
+	 * @global $wp_registered_widgets
 	 * @param  array  $params
 	 * @return array
 	 */
 	function dynamic_sidebar_params( $params ) {
-
-		global $wp_registered_widgets, $_wp_sidebars_widgets;
+		global $wp_registered_widgets;
 
 		if ( ! isset( $params[0]['widget_id'] ) ) {
 			return $params;
@@ -206,104 +206,132 @@ final class WS_Widget_Subtitles {
 		$widget = $wp_registered_widgets[ $widget_id ];
 
 		// Get instance settings.
-		if ( array_key_exists( 'callback', $widget ) ) {
+		if ( ! array_key_exists( 'callback', $widget ) ) {
+			return $params;
+		}
 
-			$instance = get_option( $widget['callback'][0]->option_name );
+		$instance = get_option( $widget['callback'][0]->option_name );
 
-			// Check if there's an instance of the widget.
-			if ( array_key_exists( $params[1]['number'], $instance ) ) {
+		// Check if there's an instance of the widget.
+		if ( ! array_key_exists( $params[1]['number'], $instance ) ) {
+			return $params;
+		}
 
-				$instance = $instance[ $params[1]['number'] ];
+		$instance = $instance[ $params[1]['number'] ];
 
-				// Add the subtitle.
-				if ( ! empty( $instance['subtitle'] ) ) {
+		// Add the subtitle.
+		if ( ! empty( $instance['subtitle'] ) ) {
 
-					$sidebar_id = '';
-					if ( is_array( $_wp_sidebars_widgets ) ) {
-						foreach ( $_wp_sidebars_widgets as $key => $widgets ) {
-							if ( is_array( $widgets ) && in_array( (string) $widget_id, array_map( 'strval', $widgets ), true ) ) {
-								$sidebar_id = $key;
-								break;
-							}
-						}
-					}
+			$sidebar_id = $this->get_widget_sidebar_id( $widget_id );
 
-					// default.
-					$subtitle_location = 'after-inside';
-					// Get location value if it exists and is valid.
-					if ( ! empty( $instance['subtitle_location'] ) && array_key_exists( $instance['subtitle_location'], $this->locations ) ) {
-						$subtitle_location = $instance['subtitle_location'];
-					}
+			// default.
+			$subtitle_location = 'after-inside';
+			// Get location value if it exists and is valid.
+			if ( ! empty( $instance['subtitle_location'] ) && array_key_exists( $instance['subtitle_location'], $this->locations ) ) {
+				$subtitle_location = $instance['subtitle_location'];
+			}
 
-					/**
-					 * Filters subtitle element (default: span).
-					 *
-					 * @since  1.0
-					 * @since  1.1  Add extra parameters.
-					 *
-					 * @param  string  'span'       The HTML element.
-					 * @param  string  $widget_id   The widget ID (widget name + instance number).
-					 * @param  string  $sidebar_id  The sidebar ID where this widget is located.
-					 * @param  array   $widget      All widget data.
-					 */
-					$subtitle_element = apply_filters( 'widget_subtitles_element', 'span', $widget_id, $sidebar_id, $widget );
+			/**
+			 * Filters subtitle element (default: span).
+			 *
+			 * @since  1.0
+			 * @since  1.1  Add extra parameters.
+			 *
+			 * @param  string  'span'       The HTML element.
+			 * @param  string  $widget_id   The widget ID (widget name + instance number).
+			 * @param  string  $sidebar_id  The sidebar ID where this widget is located.
+			 * @param  array   $widget      All widget data.
+			 */
+			$subtitle_element = apply_filters( 'widget_subtitles_element', 'span', $widget_id, $sidebar_id, $widget );
 
-					// Create subtitle classes
-					$subtitle_classes = array( 'widget-subtitle', 'widgetsubtitle' );
-					// Add subtitle location classes
-					$subtitle_classes[] = 'subtitle-' . $subtitle_location;
-					$subtitle_location_classes = explode( '-', $subtitle_location );
-					foreach ( $subtitle_location_classes as $location ) {
-						$subtitle_classes[] = 'subtitle-' . $location;
-					}
+			$subtitle_classes = $this->get_subtitle_classes( $subtitle_location );
+				/**
+			 * Allow filter for subtitle classes to overwrite, remove or add classes.
+			 *
+			 * @since  1.0
+			 * @since  1.1  Add extra parameters.
+			 *
+			 * @param  array   $subtitle_classes  The default classes.
+			 * @param  string  $widget_id         The widget ID (widget name + instance number).
+			 * @param  string  $sidebar_id        The sidebar ID where this widget is located.
+			 * @param  array   $widget            All widget data.
+			 */
+			$subtitle_classes = apply_filters( 'widget_subtitles_classes', $subtitle_classes, $widget_id, $sidebar_id, $widget );
 
-					/**
-					 * Allow filter for subtitle classes to overwrite, remove or add classes.
-					 *
-					 * @since  1.0
-					 * @since  1.1  Add extra parameters.
-					 *
-					 * @param  array   $subtitle_classes  The default classes.
-					 * @param  string  $widget_id         The widget ID (widget name + instance number).
-					 * @param  string  $sidebar_id        The sidebar ID where this widget is located.
-					 * @param  array   $widget            All widget data.
-					 */
-					$subtitle_classes = apply_filters( 'widget_subtitles_classes', $subtitle_classes, $widget_id, $sidebar_id, $widget );
+			// Create class string to use.
+			$subtitle_classes = is_array( $subtitle_classes ) ? '' . implode( ' ', $subtitle_classes ) . '' : '';
 
-					// Create class string to use.
-					$subtitle_classes = is_array( $subtitle_classes ) ? '' . implode( ' ', $subtitle_classes ) . '' : '';
+			// Start the output
+			$subtitle = '<' . $subtitle_element . ' class="' . $subtitle_classes . '">';
+			$subtitle .= $instance['subtitle'];
+			$subtitle .= '</' . $subtitle_element . '>';
 
-					// Start the output
-					$subtitle = '<' . $subtitle_element . ' class="' . $subtitle_classes . '">';
-					$subtitle .= $instance['subtitle'];
-					$subtitle .= '</' . $subtitle_element . '>';
+			// Assign the output to the correct location in the correct order.
+			switch ( $subtitle_location ) {
 
-					// Assign the output to the correct location in the correct order.
-					switch ( $subtitle_location ) {
+				case 'before-inside':
+					// A space to separate subtitle from title.
+					$params[0]['before_title'] = $params[0]['before_title'] . $subtitle . ' ';
+					break;
 
-						case 'before-inside':
-							// A space to separate subtitle from title.
-							$params[0]['before_title'] = $params[0]['before_title'] . $subtitle . ' ';
-							break;
+				case 'before-outside':
+					$params[0]['before_title'] = $subtitle . $params[0]['before_title'];
+					break;
 
-						case 'before-outside':
-							$params[0]['before_title'] = $subtitle . $params[0]['before_title'];
-							break;
+				case 'after-inside':
+					// A space to separate subtitle from title.
+					$params[0]['after_title'] = ' ' . $subtitle . $params[0]['after_title'];
+					break;
 
-						case 'after-inside':
-							// A space to separate subtitle from title.
-							$params[0]['after_title'] = ' ' . $subtitle . $params[0]['after_title'];
-							break;
-
-						case 'after-outside':
-							$params[0]['after_title'] = $params[0]['after_title'] . $subtitle;
-							break;
-					}
-
-				}
+				case 'after-outside':
+					$params[0]['after_title'] = $params[0]['after_title'] . $subtitle;
+					break;
 			}
 		}
 		return $params;
+	}
+
+	/**
+	 * Get the sidebar ID related to a widget ID
+	 *
+	 * @since  1.1.1
+	 * @access public
+	 * @param  string  $widget_id  The widget identifier.
+	 * @return string
+	 */
+	public function get_widget_sidebar_id( $widget_id ) {
+		global $_wp_sidebars_widgets;
+		$sidebar_id = '';
+		if ( is_array( $_wp_sidebars_widgets ) ) {
+			foreach ( $_wp_sidebars_widgets as $key => $widgets ) {
+				if ( is_array( $widgets ) && in_array( (string) $widget_id, array_map( 'strval', $widgets ), true ) ) {
+					// Found!
+					$sidebar_id = $key;
+					break;
+				}
+			}
+		}
+		return $sidebar_id;
+	}
+
+	/**
+	 * Get the subtitle classes
+	 *
+	 * @since  1.1.1
+	 * @access public
+	 * @param  string  $location  The subtitle location
+	 * @return array
+	 */
+	public function get_subtitle_classes( $location ) {
+		// Create subtitle classes
+		$subtitle_classes = array( 'widget-subtitle', 'widgetsubtitle' );
+		// Add subtitle location classes
+		$subtitle_classes[] = 'subtitle-' . $location;
+		$location_classes = explode( '-', $location );
+		foreach ( $location_classes as $location_class ) {
+			$subtitle_classes[] = 'subtitle-' . $location_class;
+		}
+		return $subtitle_classes;
 	}
 
 	/**
