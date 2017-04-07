@@ -53,15 +53,20 @@ final class WS_Widget_Subtitles {
 	private function __construct() {
 		self::$_instance = $this;
 
+		$before  = __( 'Before title', 'widget-subtitles' );
+		$after   = __( 'After title', 'widget-subtitles' );
+		$outside = __( 'Outside heading', 'widget-subtitles' );
+		$inside  = __( 'Inside heading', 'widget-subtitles' );
+
 		$this->locations = array(
 			// before title, outside title element.
-			'before-outside' => __( 'Before title', 'widget-subtitles' ) . ' - ' . __( 'Outside heading', 'widget-subtitles' ),
+			'before-outside' => $before . ' - ' . $outside,
 			// before title, inside title element
-			'before-inside' => __( 'Before title', 'widget-subtitles' ) . ' - ' . __( 'Inside heading', 'widget-subtitles' ),
+			'before-inside' => $before . ' - ' . $inside,
 			// after title, outside title element
-			'after-outside' => __( 'After title', 'widget-subtitles' ) . ' - ' . __( 'Outside heading', 'widget-subtitles' ),
+			'after-outside' => $after . ' - ' . $outside,
 			// after title, inside title element
-			'after-inside' => __( 'After title', 'widget-subtitles' ) . ' - ' . __( 'Inside heading', 'widget-subtitles' ),
+			'after-inside' => $after . ' - ' . $inside,
 		);
 
 		add_action( 'init', array( $this, 'init' ) );
@@ -116,7 +121,10 @@ final class WS_Widget_Subtitles {
 	 */
 	function in_widget_form( $widget, $return, $instance ) {
 
-		$instance = wp_parse_args( (array) $instance, array( 'subtitle' => '', 'subtitle_location' => '' ) );
+		$instance = wp_parse_args( (array) $instance, array(
+			'subtitle' => '',
+			'subtitle_location' => '',
+		) );
 		?>
 
 		<p>
