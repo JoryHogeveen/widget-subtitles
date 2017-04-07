@@ -45,6 +45,14 @@ final class WS_Widget_Subtitles {
 	private $locations = array();
 
 	/**
+	 * The default subtitle location.
+	 *
+	 * @since  1.1.2
+	 * @var    string
+	 */
+	private $default_location = 'after-inside';
+
+	/**
 	 * PHP5 constructor that calls specific hooks within WordPress.
 	 *
 	 * @since   0.1
@@ -53,20 +61,43 @@ final class WS_Widget_Subtitles {
 	private function __construct() {
 		self::$_instance = $this;
 
-		$before  = __( 'Before title', 'widget-subtitles' );
-		$after   = __( 'After title', 'widget-subtitles' );
-		$outside = __( 'Outside heading', 'widget-subtitles' );
-		$inside  = __( 'Inside heading', 'widget-subtitles' );
+		$loc['before']  = __( 'Before title', 'widget-subtitles' );
+		$loc['after']   = __( 'After title', 'widget-subtitles' );
+		$loc['outside'] = __( 'Outside heading', 'widget-subtitles' );
+		$loc['inside']  = __( 'Inside heading', 'widget-subtitles' );
+
+		/**
+		 * Sets the default location for subtitles.
+		 * This will be overwritten once a widget is saved.
+		 *
+		 * @since   1.1.2
+		 *
+		 * @param   string  $subtitle_location  The subtitle location (default: 'after-inside').
+		 * @return  string  Options: 'after-inside', 'after-outside', 'before-inside', 'before-outside'.
+		 */
+		$default = apply_filters( 'widget_subtitles_default_location', $this->default_location );
+		$default = explode( '-', $default );
+
+		foreach ( $default as $key => $value ) {
+			if ( isset( $loc[ $value ] ) && 2 === count( $default ) ) {
+				$default[ $key ] = $value;
+				continue;
+			} else {
+				$default = $loc['after'] . ' - ' . $loc['inside'];
+				break;
+			}
+		}
 
 		$this->locations = array(
+			'' => __( 'Default', 'widget-subtitles' ) . ' (' . $default . ')',
 			// before title, outside title element.
-			'before-outside' => $before . ' - ' . $outside,
+			'before-outside' => $loc['before'] . ' - ' . $loc['outside'],
 			// before title, inside title element
-			'before-inside' => $before . ' - ' . $inside,
+			'before-inside' => $loc['before'] . ' - ' . $loc['inside'],
 			// after title, outside title element
-			'after-outside' => $after . ' - ' . $outside,
+			'after-outside' => $loc['after'] . ' - ' . $loc['outside'],
 			// after title, inside title element
-			'after-inside' => $after . ' - ' . $inside,
+			'after-inside' => $loc['after'] . ' - ' . $loc['inside'],
 		);
 
 		add_action( 'init', array( $this, 'init' ) );
@@ -240,7 +271,7 @@ final class WS_Widget_Subtitles {
 			$sidebar_id = $this->get_widget_sidebar_id( $widget_id );
 
 			// default.
-			$subtitle_location = 'after-inside';
+			$subtitle_location = $this->default_location;
 			// Get location value if it exists and is valid.
 			if ( ! empty( $instance['subtitle_location'] ) && array_key_exists( $instance['subtitle_location'], $this->locations ) ) {
 				$subtitle_location = $instance['subtitle_location'];
@@ -260,7 +291,7 @@ final class WS_Widget_Subtitles {
 			$subtitle_element = apply_filters( 'widget_subtitles_element', 'span', $widget_id, $sidebar_id, $widget );
 
 			$subtitle_classes = $this->get_subtitle_classes( $subtitle_location );
-				/**
+			/**
 			 * Allow filter for subtitle classes to overwrite, remove or add classes.
 			 *
 			 * @since  1.0
