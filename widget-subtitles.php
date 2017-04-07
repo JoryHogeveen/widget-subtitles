@@ -80,7 +80,7 @@ final class WS_Widget_Subtitles {
 
 		foreach ( $default as $key => $value ) {
 			if ( isset( $loc[ $value ] ) && 2 === count( $default ) ) {
-				$default[ $key ] = $value;
+				$default[ $key ] = $loc[ $value ];
 				continue;
 			} else {
 				$default = array( $loc['after'] . ' - ' . $loc['inside'] );
