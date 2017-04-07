@@ -82,7 +82,7 @@ final class WS_Widget_Subtitles {
 	}
 
 	/**
-	 * Init function/action and register all used hooks
+	 * Init function/action and register all used hooks and data.
 	 *
 	 * @since   0.1
 	 * @return  void
@@ -250,22 +250,23 @@ final class WS_Widget_Subtitles {
 		if ( ! isset( $params[0]['widget_id'] ) ) {
 			return $params;
 		}
-
 		$widget_id = $params[0]['widget_id'];
+
+		if ( empty( $wp_registered_widgets[ $widget_id ] ) ) {
+			return $params;
+		}
 		$widget = $wp_registered_widgets[ $widget_id ];
 
 		// Get instance settings.
-		if ( ! array_key_exists( 'callback', $widget ) ) {
+		if ( empty( $widget['callback'][0]->option_name ) ) {
 			return $params;
 		}
-
 		$instance = get_option( $widget['callback'][0]->option_name );
 
 		// Check if there's an instance of the widget.
 		if ( ! array_key_exists( $params[1]['number'], $instance ) ) {
 			return $params;
 		}
-
 		$instance = $instance[ $params[1]['number'] ];
 
 		// Add the subtitle.
@@ -310,33 +311,64 @@ final class WS_Widget_Subtitles {
 			// Create class string to use.
 			$subtitle_classes = is_array( $subtitle_classes ) ? '' . implode( ' ', $subtitle_classes ) . '' : '';
 
-			// Start the output
+			// Start the output.
 			$subtitle = '<' . $subtitle_element . ' class="' . $subtitle_classes . '">';
 			$subtitle .= $instance['subtitle'];
 			$subtitle .= '</' . $subtitle_element . '>';
 
-			// Assign the output to the correct location in the correct order.
-			switch ( $subtitle_location ) {
+			// Add the subtitle.
+			$params[0] = $this->add_subtitle( $params[0], $subtitle, $subtitle_location );
 
-				case 'before-inside':
-					// A space to separate subtitle from title.
-					$params[0]['before_title'] = $params[0]['before_title'] . $subtitle . ' ';
-					break;
-
-				case 'before-outside':
-					$params[0]['before_title'] = $subtitle . $params[0]['before_title'];
-					break;
-
-				case 'after-inside':
-					// A space to separate subtitle from title.
-					$params[0]['after_title'] = ' ' . $subtitle . $params[0]['after_title'];
-					break;
-
-				case 'after-outside':
-					$params[0]['after_title'] = $params[0]['after_title'] . $subtitle;
-					break;
-			}
 		} // End if().
+
+		return $params;
+	}
+
+	/**
+	 * Add a subtitle in the widget parameters.
+	 *
+	 * @since   1.1.2
+	 *
+	 * @param   array   $params             Widget parameters.
+	 * @param   string  $subtitle           The subtitle, may contain HTML.
+	 * @param   string  $subtitle_location  The subtitle location.
+	 * @return  array
+	 */
+	public function add_subtitle( $params, $subtitle, $subtitle_location = '' ) {
+
+		if ( empty( $subtitle_location ) ) {
+			$subtitle_location = $this->default_location;
+		}
+
+		if ( empty( $params['before_title'] ) ) {
+			$params['before_title'] = '';
+		}
+		if ( empty( $params['after_title'] ) ) {
+			$params['after_title'] = '';
+		}
+
+		// Assign the output to the correct location in the correct order.
+		switch ( $subtitle_location ) {
+
+			case 'before-inside':
+				// A space to separate subtitle from title.
+				$params['before_title'] = $params['before_title'] . $subtitle . ' ';
+			break;
+
+			case 'before-outside':
+				$params['before_title'] = $subtitle . $params['before_title'];
+			break;
+
+			case 'after-inside':
+				// A space to separate subtitle from title.
+				$params['after_title'] = ' ' . $subtitle . $params['after_title'];
+			break;
+
+			case 'after-outside':
+				$params['after_title'] = $params['after_title'] . $subtitle;
+			break;
+		}
+
 		return $params;
 	}
 
