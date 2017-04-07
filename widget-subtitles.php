@@ -53,13 +53,41 @@ final class WS_Widget_Subtitles {
 	private $default_location = 'after-inside';
 
 	/**
-	 * PHP5 constructor that calls specific hooks within WordPress.
+	 * Constructor.
 	 *
 	 * @since   0.1
 	 * @access  private
 	 */
 	private function __construct() {
 		self::$_instance = $this;
+
+		add_action( 'init', array( $this, 'init' ) );
+	}
+
+	/**
+	 * Main Genesis Widget Subtitles.
+	 *
+	 * Ensures only one instance of Widget Subtitle is loaded or can be loaded.
+	 *
+	 * @since   0.1
+	 * @static
+	 * @see     ws_widget_subtitles()
+	 * @return  WS_Widget_Subtitles
+	 */
+	public static function get_instance() {
+		if ( is_null( self::$_instance ) ) {
+			self::$_instance = new self();
+		}
+		return self::$_instance;
+	}
+
+	/**
+	 * Init function/action and register all used hooks
+	 *
+	 * @since   0.1
+	 * @return  void
+	 */
+	public function init() {
 
 		$loc['before']  = __( 'Before title', 'widget-subtitles' );
 		$loc['after']   = __( 'After title', 'widget-subtitles' );
@@ -102,33 +130,6 @@ final class WS_Widget_Subtitles {
 			'after-inside' => $loc['after'] . ' - ' . $loc['inside'],
 		);
 
-		add_action( 'init', array( $this, 'init' ) );
-	}
-
-	/**
-	 * Main Genesis Widget Subtitles.
-	 *
-	 * Ensures only one instance of Widget Subtitle is loaded or can be loaded.
-	 *
-	 * @since   0.1
-	 * @static
-	 * @see     ws_widget_subtitles()
-	 * @return  WS_Widget_Subtitles
-	 */
-	public static function get_instance() {
-		if ( is_null( self::$_instance ) ) {
-			self::$_instance = new self();
-		}
-		return self::$_instance;
-	}
-
-	/**
-	 * Init function/action and register all used hooks
-	 *
-	 * @since   0.1
-	 * @return  void
-	 */
-	public function init() {
 		add_action( 'init', array( $this, 'load_plugin_textdomain' ) );
 		add_action( 'in_widget_form', array( $this, 'in_widget_form' ), 9, 3 );
 		add_filter( 'widget_update_callback', array( $this, 'widget_update_callback' ), 10, 4 );
