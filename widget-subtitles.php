@@ -70,6 +70,7 @@ final class WS_Widget_Subtitles {
 	 * Ensures only one instance of Widget Subtitle is loaded or can be loaded.
 	 *
 	 * @since   0.1
+	 * @access  public
 	 * @static
 	 * @see     ws_widget_subtitles()
 	 * @return  WS_Widget_Subtitles
@@ -85,6 +86,7 @@ final class WS_Widget_Subtitles {
 	 * Init function/action and register all used hooks and data.
 	 *
 	 * @since   0.1
+	 * @access  public
 	 * @return  void
 	 */
 	public function init() {
@@ -139,21 +141,24 @@ final class WS_Widget_Subtitles {
 	/**
 	 * Load the plugin's translated strings
 	 * @since  0.1
+	 * @access  public
 	 */
-	function load_plugin_textdomain() {
+	public function load_plugin_textdomain() {
 		load_plugin_textdomain( 'widget-subtitles', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 	}
 
 	/**
-	 * Add a subtitle input field into the form
+	 * Add a subtitle input field into the form.
+	 *
 	 * @since  0.1
+	 * @access  public
 	 *
 	 * @param   WP_Widget  $widget
 	 * @param   null       $return
 	 * @param   array      $instance
 	 * @return  null
 	 */
-	function in_widget_form( $widget, $return, $instance ) {
+	public function in_widget_form( $widget, $return, $instance ) {
 
 		$instance = wp_parse_args( (array) $instance, array(
 			'subtitle' => '',
@@ -207,16 +212,16 @@ final class WS_Widget_Subtitles {
 	/**
 	 * Filter the widget’s settings before saving, return false to cancel saving (keep the old settings if updating).
 	 *
-	 * @since  0.1
+	 * @since   0.1
+	 * @access  public
 	 *
-	 * @param  array      $instance
-	 * @param  array      $new_instance
-	 * @param  array      $old_instance
-	 * @param  WP_Widget  $widget
-	 *
-	 * @return array
+	 * @param   array      $instance
+	 * @param   array      $new_instance
+	 * @param   array      $old_instance
+	 * @param   WP_Widget  $widget
+	 * @return  array
 	 */
-	function widget_update_callback( $instance, $new_instance, $old_instance, $widget ) {
+	public function widget_update_callback( $instance, $new_instance, $old_instance, $widget ) {
 		unset( $instance['subtitle'] );
 		unset( $instance['subtitle_location'] );
 
@@ -238,13 +243,14 @@ final class WS_Widget_Subtitles {
 	 * // Disable variable check because of global $wp_registered_widgets.
 	 * @SuppressWarnings(PHPMD.LongVariables)
 	 *
-	 * @since  0.1
+	 * @since   0.1
+	 * @access  public
 	 *
-	 * @global $wp_registered_widgets
-	 * @param  array  $params
-	 * @return array
+	 * @global  $wp_registered_widgets
+	 * @param   array  $params
+	 * @return  array
 	 */
-	function dynamic_sidebar_params( $params ) {
+	public function dynamic_sidebar_params( $params ) {
 		global $wp_registered_widgets;
 
 		if ( ! isset( $params[0]['widget_id'] ) ) {
@@ -328,7 +334,7 @@ final class WS_Widget_Subtitles {
 	 * Add a subtitle in the widget parameters.
 	 *
 	 * @since   1.1.2
-	 *
+	 * @access  public
 	 * @param   array   $params             Widget parameters.
 	 * @param   string  $subtitle           The subtitle, may contain HTML.
 	 * @param   string  $subtitle_location  The subtitle location.
@@ -375,10 +381,10 @@ final class WS_Widget_Subtitles {
 	/**
 	 * Get the sidebar ID related to a widget ID.
 	 *
-	 * @since  1.1.1
-	 * @access public
-	 * @param  string  $widget_id  The widget identifier.
-	 * @return string
+	 * @since   1.1.1
+	 * @access  public
+	 * @param   string  $widget_id  The widget identifier.
+	 * @return  string
 	 */
 	public function get_widget_sidebar_id( $widget_id ) {
 		global $_wp_sidebars_widgets;
@@ -398,10 +404,10 @@ final class WS_Widget_Subtitles {
 	/**
 	 * Get the subtitle classes.
 	 *
-	 * @since  1.1.1
-	 * @access public
-	 * @param  string  $location  The subtitle location.
-	 * @return array
+	 * @since   1.1.1
+	 * @access  public
+	 * @param   string  $location  The subtitle location.
+	 * @return  array
 	 */
 	public function get_subtitle_classes( $location ) {
 		// Create subtitle classes
@@ -418,9 +424,9 @@ final class WS_Widget_Subtitles {
 	/**
 	 * Magic method to output a string if trying to use the object as a string.
 	 *
-	 * @since  0.1
-	 * @access public
-	 * @return string
+	 * @since   0.1
+	 * @access  public
+	 * @return  string
 	 */
 	public function __toString() {
 		return get_class( $this );
@@ -429,9 +435,9 @@ final class WS_Widget_Subtitles {
 	/**
 	 * Magic method to keep the object from being cloned.
 	 *
-	 * @since  0.1
-	 * @access public
-	 * @return void
+	 * @since   0.1
+	 * @access  public
+	 * @return  void
 	 */
 	public function __clone() {
 		_doing_it_wrong(
@@ -444,9 +450,9 @@ final class WS_Widget_Subtitles {
 	/**
 	 * Magic method to keep the object from being unserialized.
 	 *
-	 * @since  0.1
-	 * @access public
-	 * @return void
+	 * @since   0.1
+	 * @access  public
+	 * @return  void
 	 */
 	public function __wakeup() {
 		_doing_it_wrong(
@@ -459,11 +465,11 @@ final class WS_Widget_Subtitles {
 	/**
 	 * Magic method to prevent a fatal error when calling a method that doesn't exist.
 	 *
-	 * @since  0.1
-	 * @access public
-	 * @param  string $method
-	 * @param  array  $args
-	 * @return null
+	 * @since   0.1
+	 * @access  public
+	 * @param   string $method
+	 * @param   array  $args
+	 * @return  null
 	 */
 	public function __call( $method = '', $args = array() ) {
 		_doing_it_wrong(
