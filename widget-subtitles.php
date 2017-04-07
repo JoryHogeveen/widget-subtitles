@@ -183,14 +183,15 @@ final class WS_Widget_Subtitles {
 	 * @return array
 	 */
 	function widget_update_callback( $instance, $new_instance, $old_instance, $widget ) {
-		$instance['subtitle'] = '';
-		$instance['subtitle_location'] = '';
+		unset( $instance['subtitle'] );
+		unset( $instance['subtitle_location'] );
 
 		if ( isset( $new_instance['subtitle'] ) ) {
 			$instance['subtitle'] = esc_html( strip_tags( $new_instance['subtitle'] ) );
-		}
-		if ( isset( $new_instance['subtitle_location'] ) ) {
-			$instance['subtitle_location'] = strip_tags( $new_instance['subtitle_location'] );
+
+			if ( isset( $new_instance['subtitle_location'] ) ) {
+				$instance['subtitle_location'] = strip_tags( $new_instance['subtitle_location'] );
+			}
 		}
 
 		return $instance;
