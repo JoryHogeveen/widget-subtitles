@@ -12,7 +12,9 @@
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
 
-! defined( 'ABSPATH' ) and die();
+if ( ! defined( 'ABSPATH' ) ) {
+	die();
+}
 
 if ( ! class_exists( 'WS_Widget_Subtitles' ) ) {
 
@@ -22,7 +24,7 @@ if ( ! class_exists( 'WS_Widget_Subtitles' ) ) {
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Widget_Subtitles
  * @since   0.1
- * @version 1.1.1
+ * @version 1.1.2
  */
 final class WS_Widget_Subtitles {
 
@@ -107,14 +109,14 @@ final class WS_Widget_Subtitles {
 	 * Add a subtitle input field into the form
 	 * @since  0.1
 	 *
-	 * @param  object  $widget  WP_Widget
-	 * @param  null    $return
-	 * @param  array   $instance
+	 * @param   WP_Widget  $widget
+	 * @param   null       $return
+	 * @param   array      $instance
+	 * @return  null
 	 */
 	function in_widget_form( $widget, $return, $instance ) {
 
 		$instance = wp_parse_args( (array) $instance, array( 'subtitle' => '', 'subtitle_location' => '' ) );
-		$return = null;
 		?>
 
 		<p>
@@ -138,11 +140,11 @@ final class WS_Widget_Subtitles {
 		<script type="text/javascript">
 			;(function($){
 				// show/hide subtitle location input
-				if ( '' == $('#<?php echo $widget->get_field_id( 'subtitle' ) ?>').val() ) {
+				if ( ! $('#<?php echo $widget->get_field_id( 'subtitle' ) ?>').val() ) {
 					$('#<?php echo $widget->get_field_id( 'subtitle_location' ) ?>').parent().hide();
 				}
 				$(document).on('keyup', '#<?php echo $widget->get_field_id( 'subtitle' ) ?>', function() {
-					if ( '' != $(this).val() ) {
+					if ( $(this).val() ) {
 						$('#<?php echo $widget->get_field_id( 'subtitle_location' ) ?>').parent().slideDown('fast');
 					} else {
 						$('#<?php echo $widget->get_field_id( 'subtitle_location' ) ?>').parent().slideUp('fast');
@@ -157,6 +159,7 @@ final class WS_Widget_Subtitles {
 		</script>
 
 		<?php
+		return $return;
 	}
 
 	/**
@@ -164,10 +167,10 @@ final class WS_Widget_Subtitles {
 	 *
 	 * @since  0.1
 	 *
-	 * @param  array  $instance
-	 * @param  array  $new_instance
-	 * @param  array  $old_instance
-	 * @param  object $widget  WP_Widget
+	 * @param  array      $instance
+	 * @param  array      $new_instance
+	 * @param  array      $old_instance
+	 * @param  WP_Widget  $widget
 	 *
 	 * @return array
 	 */
@@ -188,6 +191,9 @@ final class WS_Widget_Subtitles {
 	/**
 	 * Gets called from within the dynamic_sidebar function which displays a widget container.
 	 * This filter gets called for each widget instance in the sidebar.
+	 *
+	 * // Disable variable check because of global $wp_registered_widgets.
+	 * @SuppressWarnings(PHPMD.LongVariables)
 	 *
 	 * @since  0.1
 	 *
@@ -287,12 +293,12 @@ final class WS_Widget_Subtitles {
 					$params[0]['after_title'] = $params[0]['after_title'] . $subtitle;
 					break;
 			}
-		}
+		} // End if().
 		return $params;
 	}
 
 	/**
-	 * Get the sidebar ID related to a widget ID
+	 * Get the sidebar ID related to a widget ID.
 	 *
 	 * @since  1.1.1
 	 * @access public
@@ -315,11 +321,11 @@ final class WS_Widget_Subtitles {
 	}
 
 	/**
-	 * Get the subtitle classes
+	 * Get the subtitle classes.
 	 *
 	 * @since  1.1.1
 	 * @access public
-	 * @param  string  $location  The subtitle location
+	 * @param  string  $location  The subtitle location.
 	 * @return array
 	 */
 	public function get_subtitle_classes( $location ) {
@@ -409,4 +415,4 @@ function ws_widget_subtitles() {
 }
 ws_widget_subtitles();
 
-} // endif
+} // End if().
