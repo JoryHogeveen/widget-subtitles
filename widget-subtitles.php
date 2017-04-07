@@ -83,10 +83,12 @@ final class WS_Widget_Subtitles {
 				$default[ $key ] = $value;
 				continue;
 			} else {
-				$default = $loc['after'] . ' - ' . $loc['inside'];
+				$default = array( $loc['after'] . ' - ' . $loc['inside'] );
 				break;
 			}
 		}
+
+		$default = implode( ' - ', $default );
 
 		$this->locations = array(
 			'' => __( 'Default', 'widget-subtitles' ) . ' (' . $default . ')',
