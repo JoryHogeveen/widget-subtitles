@@ -117,4 +117,84 @@ class PluginTest extends WP_UnitTestCase {
 			$this->assertEquals( $test['result'], $ws->add_subtitle( $test['start'], $test['data'], $test['location'] ) );
 		}
 	}
+
+	// Check widget_update_callback() method
+	function test_widget_update_callback() {
+		$ws = ws_widget_subtitles();
+
+		$tests = array(
+			array(
+				'start'  => array(),
+				'data'   => array(
+					'subtitle' => 'test',
+					'subtitle_location' => '1', // Not valid.
+				),
+				'result' => array(
+					'subtitle' => 'test',
+				),
+			),
+			array(
+				'start'  => array(),
+				'data'   => array(
+					'subtitle' => 'test',
+					'subtitle_location' => '', // Not valid.
+				),
+				'result' => array(
+					'subtitle' => 'test',
+				),
+			),
+			array(
+				'start'  => array(),
+				'data'   => array(
+					'subtitle_location' => 0, // Not valid.
+				),
+				'result' => array(),
+			),
+			// Valid data.
+			array(
+				'start'  => array(),
+				'data'   => array(
+					'subtitle' => 'subtitle',
+					'subtitle_location' => 'after-inside',
+				),
+				'result' => array(
+					'subtitle' => 'subtitle',
+					'subtitle_location' => 'after-inside',
+				),
+			),
+			// Empty data.
+			array(
+				'start'  => array(),
+				'data'   => array(
+					'subtitle' => '',
+					'subtitle_location' => 0,
+				),
+				'result' => array(),
+			),
+			// Remove empty data.
+			array(
+				'start'  => array(
+					'subtitle' => '',
+					'subtitle_location' => true,
+				),
+				'data'   => array(),
+				'result' => array(),
+			),
+			array(
+				'start'  => array(
+					'subtitle' => 'test',
+					'subtitle_location' => true,
+				),
+				'data'   => array(
+					'subtitle' => '',
+				),
+				'result' => array(),
+			),
+		);
+
+		// Run tests
+		foreach ( $tests as $test ) {
+			$this->assertEquals( $test['result'], $ws->widget_update_callback( $test['start'], $test['data'] ) );
+		}
+	}
 }

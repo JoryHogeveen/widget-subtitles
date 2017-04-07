@@ -217,18 +217,18 @@ final class WS_Widget_Subtitles {
 	 *
 	 * @param   array      $instance
 	 * @param   array      $new_instance
-	 * @param   array      $old_instance
-	 * @param   WP_Widget  $widget
+	 * param   array      $old_instance
+	 * param   WP_Widget  $widget
 	 * @return  array
 	 */
-	public function widget_update_callback( $instance, $new_instance, $old_instance, $widget ) {
+	public function widget_update_callback( $instance, $new_instance ) {
 		unset( $instance['subtitle'] );
 		unset( $instance['subtitle_location'] );
 
-		if ( isset( $new_instance['subtitle'] ) ) {
+		if ( ! empty( $new_instance['subtitle'] ) ) {
 			$instance['subtitle'] = esc_html( strip_tags( $new_instance['subtitle'] ) );
 
-			if ( isset( $new_instance['subtitle_location'] ) ) {
+			if ( ! empty( $new_instance['subtitle_location'] ) && array_key_exists( $new_instance['subtitle_location'], $this->locations ) ) {
 				$instance['subtitle_location'] = strip_tags( $new_instance['subtitle_location'] );
 			}
 		}
