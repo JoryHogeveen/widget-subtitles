@@ -30,7 +30,7 @@ Since  1.0
 Allow filter for subtitle classes to overwrite, remove or add classes.  
 Since  1.0  
 
-*	**Default:** `array( 'widget-subtitle', 'widgetsubtitle', 'subtitle-{LOCATION}' );` Where {LOCATION} stands for your selected location
+*	**Default:** `array( 'widget-subtitle', 'widgetsubtitle', 'subtitle-{LOCATION}' );` *Where {LOCATION} stands for your selected location*.
 *	**Parameters:**
 	*	`array`  Default classes.
 	*	`string` Widget ID, widget name + instance number.
@@ -53,6 +53,10 @@ You can use these filters inside your theme functions.php file or in a plugin.
 1. Upload `/widget-subtitles` to the `/wp-content/plugins/` directory
 2. Activate the plugin through the *Plugins* menu in WordPress
 3. Go to *Appearance* > *Widgets* menu and fill out your subtitles
+
+== Screenshots ==
+
+1. The subtitle!
 
 == Changelog ==
 

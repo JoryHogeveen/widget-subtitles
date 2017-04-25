@@ -32,7 +32,7 @@ Since  1.0
 Allow filter for subtitle classes to overwrite, remove or add classes.  
 Since  1.0  
 
-*	**Default:** `array( 'widget-subtitle', 'widgetsubtitle', 'subtitle-{LOCATION}' );` Where {LOCATION} stands for your selected location
+*	**Default:** `array( 'widget-subtitle', 'widgetsubtitle', 'subtitle-{LOCATION}' );` *Where {LOCATION} stands for your selected location*.
 *	**Parameters:**
 	*	`array`  Default classes.
 	*	`string` Widget ID, widget name + instance number.
