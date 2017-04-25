@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=YGPLM
 Tags: widget, widget subtitle, subtitle, subtitles, sub title, sidebar
 Requires at least: 3.0
 Tested up to: 4.8
-Stable tag: 1.1.1
+Stable tag: 1.1.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -15,24 +15,38 @@ Add a customizable subtitle to your widgets
 This plugin adds a subtitle input field to all your widgets. You can also change the location of the subtitle and even use filters to change the subtitle output.
 
 = Filter: `widget_subtitles_element` =
-Allows you to change the HTML element for the subtitle
+Allows you to change the HTML element for the subtitle.  
+Since  1.0  
 
-*	**Default:** span
+*	**Default:** `span`
 *	**Parameters:**
-	*	`string` (default)
-	*	`string` (widget id)
-	*	`string` (sidebar id)
-	*	`array`  (widget data)
+	*	`string` Default element.
+	*	`string` Widget ID, widget name + instance number.
+	*	`string` Sidebar ID where this widget is located. (since 1.1)
+	*	`array`  All widget data. (since 1.1)
+*	**Return:** `string` A valid HTML element.
 
 = Filter: `widget_subtitles_classes` =
-Allows you to change the HTML element for the subtitle
+Allow filter for subtitle classes to overwrite, remove or add classes.  
+Since  1.0  
 
-*	**Default:** `array( 'widget-subtitle', 'widgetsubtitle', 'subtitle-LOCATION' );` Where LOCATION stands for your selected location
+*	**Default:** `array( 'widget-subtitle', 'widgetsubtitle', 'subtitle-{LOCATION}' );` Where {LOCATION} stands for your selected location
 *	**Parameters:**
-	*	`array`  (default classes)
-	*	`string` (widget id)
-	*	`string` (sidebar id)
-	*	`array`  (widget data)
+	*	`array`  Default classes.
+	*	`string` Widget ID, widget name + instance number.
+	*	`string` Sidebar ID where this widget is located. (since 1.1)
+	*	`array`  All widget data. (since 1.1)
+*	**Return:** `array` An array of CSS classes.
+
+= Filter: `widget_subtitles_default_location` =
+Sets the default location for subtitles.  
+Since  1.1.2  
+
+*	**Default:** `after-inside`
+*	**Parameters:** `string` The default subtitle location.
+*	**Return:** `string` Options: `after-inside`, `after-outside`, `before-inside`, `before-outside`.
+
+You can use these filters inside your theme functions.php file or in a plugin.
 
 == Installation ==
 
