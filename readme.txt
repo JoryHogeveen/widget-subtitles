@@ -56,7 +56,8 @@ You can use these filters inside your theme functions.php file or in a plugin.
 
 == Screenshots ==
 
-1. The subtitle!
+1. The subtitle options
+2. Frontend subtitle example (after title - inside heading)
 
 == Changelog ==
 
