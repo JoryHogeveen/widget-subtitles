@@ -48,6 +48,14 @@ Since  1.1.2
 *	**Parameters:** `string` The default subtitle location.
 *	**Return:** `string` Options: `after-inside`, `after-outside`, `before-inside`, `before-outside`.
 
+#### `widget_subtitles_edit_location_capability`
+Change the capability required to modify subtitle locations.  
+Since  1.1.2  
+
+*	**Default:** `edit_theme_options`
+*	**Parameters:** `string` The default capability.
+*	**Return:** `string` The new capability.
+
 You can use these filters inside your theme functions.php file or in a plugin.
 
 ## Installation
