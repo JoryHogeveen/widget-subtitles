@@ -208,6 +208,8 @@ final class WS_Widget_Subtitles {
 			'subtitle' => '',
 			'subtitle_location' => '',
 		) );
+
+		$can_edit_location = current_user_can( $this->location_cap );
 		?>
 
 		<p>
@@ -215,7 +217,7 @@ final class WS_Widget_Subtitles {
 			<input class="widefat" id="<?php echo $widget->get_field_id( 'subtitle' ) ?>" name="<?php echo $widget->get_field_name( 'subtitle' ); ?>" type="text" value="<?php echo esc_attr( strip_tags( $instance['subtitle'] ) ); ?>"/>
 		</p>
 
-		<?php if ( current_user_can( $this->location_cap ) ) { ?>
+		<?php if ( $can_edit_location ) { ?>
 		<p>
 			<label for="<?php echo $widget->get_field_id( 'subtitle_location' ) ?>"><?php esc_html_e( 'Subtitle location', 'widget-subtitles' ) ?>:</label>
 			<select name="<?php echo $widget->get_field_name( 'subtitle_location' ); ?>" id="<?php echo $widget->get_field_id( 'subtitle_location' ) ?>">
@@ -234,7 +236,7 @@ final class WS_Widget_Subtitles {
 
 		<script type="text/javascript">
 			;(function($){
-				<?php if ( current_user_can( $this->location_cap ) ) { ?>
+				<?php if ( $can_edit_location ) { ?>
 				// show/hide subtitle location input
 				if ( ! $('#<?php echo $widget->get_field_id( 'subtitle' ) ?>').val() ) {
 					$('#<?php echo $widget->get_field_id( 'subtitle_location' ) ?>').parent().hide();
@@ -250,7 +252,7 @@ final class WS_Widget_Subtitles {
 				// Relocate subtitle input after title if available
 				if ( $('#<?php echo $widget->get_field_id( 'title' ) ?>').parent('p').length ) {
 					$('#<?php echo $widget->get_field_id( 'subtitle' ) ?>').parent('p').detach().insertAfter( $('#<?php echo $widget->get_field_id( 'title' ) ?>').parent('p') );
-					<?php if ( current_user_can( $this->location_cap ) ) { ?>
+					<?php if ( $can_edit_location ) { ?>
 					$('#<?php echo $widget->get_field_id( 'subtitle_location' ) ?>').parent('p').detach().insertAfter( $('#<?php echo $widget->get_field_id( 'subtitle' ) ?>').parent('p') );
 					<?php } ?>
 				}
