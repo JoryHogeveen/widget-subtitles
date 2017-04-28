@@ -58,9 +58,12 @@ You can use these filters inside your theme functions.php file or in a plugin.
 
 == Installation ==
 
-1. Upload `/widget-subtitles` to the `/wp-content/plugins/` directory
-2. Activate the plugin through the *Plugins* menu in WordPress
-3. Go to *Appearance* > *Widgets* menu and fill out your subtitles
+Installation of this plugin works like any other plugin out there. Either:
+
+1. Upload and unpack the zip file to the '/wp-content/plugins/' directory
+2. Activate the plugin through the 'Plugins' menu in WordPress
+
+Or search for "Widget Subtitles" via your plugins menu.
 
 == Screenshots ==
 
