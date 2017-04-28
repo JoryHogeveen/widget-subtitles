@@ -1,15 +1,41 @@
 <?php
 /**
- * Plugin Name: Widget Subtitles
- * Description: Add a customizable subtitle to your widgets
- * Plugin URI:  https://wordpress.org/plugins/widget-subtitles/
- * Version:     1.1.2
- * Author:      Jory Hogeveen
- * Author URI:  http://www.keraweb.nl
- * Text Domain: widget-subtitles
- * Domain Path: /languages
- * License:     GNU General Public License v2 or later
- * License URI: http://www.gnu.org/licenses/gpl-2.0.html
+ * @package Widget_Subtitles
+ * @author  Jory Hogeveen
+ * @since   0.1
+ * @version 1.1.2
+ * @licence GPL-2.0+
+ * @link    https://github.com/JoryHogeveen/widget-subtitles
+ *
+ * @wordpress-plugin
+ * Plugin Name:       Widget Subtitles
+ * Plugin URI:        https://wordpress.org/plugins/widget-subtitles/
+ * Description:       Add a customizable subtitle to your widgets
+ * Version:           1.1.2
+ * Author:            Jory Hogeveen
+ * Author URI:        http://www.keraweb.nl
+ * Text Domain:       widget-subtitles
+ * Domain Path:       /languages
+ * License:           GPL-2.0+
+ * License URI:       http://www.gnu.org/licenses/gpl-2.0.html
+ * GitHub Plugin URI: https://github.com/JoryHogeveen/widget-subtitles
+ *
+ * Copyright 2015-2017 Jory Hogeveen
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * ( at your option ) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+ * MA 02110-1301, USA.
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
