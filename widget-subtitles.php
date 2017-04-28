@@ -250,7 +250,9 @@ final class WS_Widget_Subtitles {
 				// Relocate subtitle input after title if available
 				if ( $('#<?php echo $widget->get_field_id( 'title' ) ?>').parent('p').length ) {
 					$('#<?php echo $widget->get_field_id( 'subtitle' ) ?>').parent('p').detach().insertAfter( $('#<?php echo $widget->get_field_id( 'title' ) ?>').parent('p') );
+					<?php if ( current_user_can( $this->location_cap ) ) { ?>
 					$('#<?php echo $widget->get_field_id( 'subtitle_location' ) ?>').parent('p').detach().insertAfter( $('#<?php echo $widget->get_field_id( 'subtitle' ) ?>').parent('p') );
+					<?php } ?>
 				}
 			})( jQuery );
 		</script>
