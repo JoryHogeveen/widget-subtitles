@@ -61,21 +61,29 @@ You can use these filters inside your theme functions.php file or in a plugin.
 
 == Changelog ==
 
+= 1.1.2 =
+
+*	Feature: new filter `widget_subtitles_default_location`
+*	Enhancement: Fix CodeClimate coding standards issues.
+*	Screenshots added
+
+Detailed info: [PR on GitHub](https://github.com/JoryHogeveen/widget-subtitles/pull/7)
+
 = 1.1.1 =
 
-*	Fixed code inspections from CodeClimate
-*	Tested with WordPress 4.8
+*	Fixed code inspections from CodeClimate.
+*	Tested with WordPress 4.8.
 
 Detailed info: [PR on GitHub](https://github.com/JoryHogeveen/widget-subtitles/pull/5)
 
 = 1.1 =
-*	Add extra parameters to the filter hooks
+*	Add extra parameters to the filter hooks.
 
 = 1.0.1 =
-*	Update textdomain hook
+*	Update textdomain hook.
 
 = 1.0 =
-*	First version
+*	First version.
 
 == Other Notes ==
 
