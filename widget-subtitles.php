@@ -157,7 +157,7 @@ final class WS_Widget_Subtitles {
 				$default[ $key ] = $loc[ $value ];
 				continue;
 			} else {
-				$default = array( $loc['after'] . ' - ' . $loc['inside'] );
+				$default = array( $loc['after'], $loc['inside'] );
 				break;
 			}
 		}
@@ -183,8 +183,8 @@ final class WS_Widget_Subtitles {
 	}
 
 	/**
-	 * Load the plugin's translated strings
-	 * @since  0.1
+	 * Load the plugin's translated strings.
+	 * @since   0.1
 	 * @access  public
 	 */
 	public function load_plugin_textdomain() {
@@ -194,7 +194,7 @@ final class WS_Widget_Subtitles {
 	/**
 	 * Add a subtitle input field into the form.
 	 *
-	 * @since  0.1
+	 * @since   0.1
 	 * @access  public
 	 *
 	 * @param   WP_Widget  $widget
@@ -204,10 +204,13 @@ final class WS_Widget_Subtitles {
 	 */
 	public function in_widget_form( $widget, $return, $instance ) {
 
-		$instance = wp_parse_args( (array) $instance, array(
-			'subtitle' => '',
-			'subtitle_location' => '',
-		) );
+		$instance = wp_parse_args(
+			(array) $instance,
+			array(
+				'subtitle' => '',
+				'subtitle_location' => '',
+			)
+		);
 
 		$can_edit_location = current_user_can( $this->location_cap );
 		?>
@@ -237,11 +240,11 @@ final class WS_Widget_Subtitles {
 		<script type="text/javascript">
 			;(function($){
 				<?php if ( $can_edit_location ) { ?>
-				// show/hide subtitle location input
+				// show/hide subtitle location input.
 				if ( ! $('#<?php echo $widget->get_field_id( 'subtitle' ) ?>').val() ) {
 					$('#<?php echo $widget->get_field_id( 'subtitle_location' ) ?>').parent().hide();
 				}
-				$(document).on('keyup', '#<?php echo $widget->get_field_id( 'subtitle' ) ?>', function() {
+				$(document).on( 'keyup', '#<?php echo $widget->get_field_id( 'subtitle' ) ?>', function() {
 					if ( $(this).val() ) {
 						$('#<?php echo $widget->get_field_id( 'subtitle_location' ) ?>').parent().slideDown('fast');
 					} else {
@@ -249,7 +252,7 @@ final class WS_Widget_Subtitles {
 					}
 				} );
 				<?php } ?>
-				// Relocate subtitle input after title if available
+				// Relocate subtitle input after title if available.
 				if ( $('#<?php echo $widget->get_field_id( 'title' ) ?>').parent('p').length ) {
 					$('#<?php echo $widget->get_field_id( 'subtitle' ) ?>').parent('p').detach().insertAfter( $('#<?php echo $widget->get_field_id( 'title' ) ?>').parent('p') );
 					<?php if ( $can_edit_location ) { ?>
@@ -466,9 +469,9 @@ final class WS_Widget_Subtitles {
 	 * @return  array
 	 */
 	public function get_subtitle_classes( $location ) {
-		// Create subtitle classes
+		// Create subtitle classes.
 		$subtitle_classes = array( 'widget-subtitle', 'widgetsubtitle' );
-		// Add subtitle location classes
+		// Add subtitle location classes.
 		$subtitle_classes[] = 'subtitle-' . $location;
 		$location_classes = explode( '-', $location );
 		foreach ( $location_classes as $location_class ) {
