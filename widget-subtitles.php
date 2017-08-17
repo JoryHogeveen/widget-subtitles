@@ -58,7 +58,7 @@ final class WS_Widget_Subtitles {
 	 * The single instance of the class.
 	 *
 	 * @since  0.1
-	 * @var	   WS_Widget_Subtitles
+	 * @var    WS_Widget_Subtitles
 	 */
 	private static $_instance = null;
 
@@ -216,18 +216,18 @@ final class WS_Widget_Subtitles {
 		?>
 
 		<p>
-			<label for="<?php echo $widget->get_field_id( 'subtitle' ) ?>"><?php esc_html_e( 'Subtitle', 'widget-subtitles' ); ?>:</label>
-			<input class="widefat" id="<?php echo $widget->get_field_id( 'subtitle' ) ?>" name="<?php echo $widget->get_field_name( 'subtitle' ); ?>" type="text" value="<?php echo esc_attr( strip_tags( $instance['subtitle'] ) ); ?>"/>
+			<label for="<?php echo $widget->get_field_id( 'subtitle' ); ?>"><?php esc_html_e( 'Subtitle', 'widget-subtitles' ); ?>:</label>
+			<input class="widefat" id="<?php echo $widget->get_field_id( 'subtitle' ); ?>" name="<?php echo $widget->get_field_name( 'subtitle' ); ?>" type="text" value="<?php echo esc_attr( strip_tags( $instance['subtitle'] ) ); ?>"/>
 		</p>
 
 		<?php if ( $can_edit_location ) { ?>
 		<p>
-			<label for="<?php echo $widget->get_field_id( 'subtitle_location' ) ?>"><?php esc_html_e( 'Subtitle location', 'widget-subtitles' ) ?>:</label>
-			<select name="<?php echo $widget->get_field_name( 'subtitle_location' ); ?>" id="<?php echo $widget->get_field_id( 'subtitle_location' ) ?>">
+			<label for="<?php echo $widget->get_field_id( 'subtitle_location' ); ?>"><?php esc_html_e( 'Subtitle location', 'widget-subtitles' ); ?>:</label>
+			<select name="<?php echo $widget->get_field_name( 'subtitle_location' ); ?>" id="<?php echo $widget->get_field_id( 'subtitle_location' ); ?>">
 			<?php
 			foreach ( (array) $this->locations as $location_key => $location_name ) {
 				?>
-				<option value="<?php echo $location_key ?>" <?php selected( $instance['subtitle_location'], $location_key, true ) ?>><?php echo $location_name ?></option>
+				<option value="<?php echo $location_key; ?>" <?php selected( $instance['subtitle_location'], $location_key, true ); ?>><?php echo $location_name; ?></option>
 				<?php
 			}
 			?>
@@ -241,22 +241,22 @@ final class WS_Widget_Subtitles {
 			;(function($){
 				<?php if ( $can_edit_location ) { ?>
 				// show/hide subtitle location input.
-				if ( ! $('#<?php echo $widget->get_field_id( 'subtitle' ) ?>').val() ) {
-					$('#<?php echo $widget->get_field_id( 'subtitle_location' ) ?>').parent().hide();
+				if ( ! $('#<?php echo $widget->get_field_id( 'subtitle' ); ?>').val() ) {
+					$('#<?php echo $widget->get_field_id( 'subtitle_location' ); ?>').parent().hide();
 				}
-				$(document).on( 'keyup', '#<?php echo $widget->get_field_id( 'subtitle' ) ?>', function() {
+				$(document).on( 'keyup', '#<?php echo $widget->get_field_id( 'subtitle' ); ?>', function() {
 					if ( $(this).val() ) {
-						$('#<?php echo $widget->get_field_id( 'subtitle_location' ) ?>').parent().slideDown('fast');
+						$('#<?php echo $widget->get_field_id( 'subtitle_location' ); ?>').parent().slideDown('fast');
 					} else {
-						$('#<?php echo $widget->get_field_id( 'subtitle_location' ) ?>').parent().slideUp('fast');
+						$('#<?php echo $widget->get_field_id( 'subtitle_location' ); ?>').parent().slideUp('fast');
 					}
 				} );
 				<?php } ?>
 				// Relocate subtitle input after title if available.
-				if ( $('#<?php echo $widget->get_field_id( 'title' ) ?>').parent('p').length ) {
-					$('#<?php echo $widget->get_field_id( 'subtitle' ) ?>').parent('p').detach().insertAfter( $('#<?php echo $widget->get_field_id( 'title' ) ?>').parent('p') );
+				if ( $('#<?php echo $widget->get_field_id( 'title' ); ?>').parent('p').length ) {
+					$('#<?php echo $widget->get_field_id( 'subtitle' ); ?>').parent('p').detach().insertAfter( $('#<?php echo $widget->get_field_id( 'title' ); ?>').parent('p') );
 					<?php if ( $can_edit_location ) { ?>
-					$('#<?php echo $widget->get_field_id( 'subtitle_location' ) ?>').parent('p').detach().insertAfter( $('#<?php echo $widget->get_field_id( 'subtitle' ) ?>').parent('p') );
+					$('#<?php echo $widget->get_field_id( 'subtitle_location' ); ?>').parent('p').detach().insertAfter( $('#<?php echo $widget->get_field_id( 'subtitle' ); ?>').parent('p') );
 					<?php } ?>
 				}
 			})( jQuery );
@@ -418,20 +418,20 @@ final class WS_Widget_Subtitles {
 			case 'before-inside':
 				// A space to separate subtitle from title.
 				$params['before_title'] = $params['before_title'] . $subtitle . ' ';
-			break;
+				break;
 
 			case 'before-outside':
 				$params['before_title'] = $subtitle . $params['before_title'];
-			break;
+				break;
 
 			case 'after-inside':
 				// A space to separate subtitle from title.
 				$params['after_title'] = ' ' . $subtitle . $params['after_title'];
-			break;
+				break;
 
 			case 'after-outside':
 				$params['after_title'] = $params['after_title'] . $subtitle;
-			break;
+				break;
 		}
 
 		return $params;
