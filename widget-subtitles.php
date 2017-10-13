@@ -3,7 +3,7 @@
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Widget_Subtitles
  * @since   0.1
- * @version 1.1.2
+ * @version 1.1.3
  * @licence GPL-2.0+
  * @link    https://github.com/JoryHogeveen/widget-subtitles
  *
@@ -11,7 +11,7 @@
  * Plugin Name:       Widget Subtitles
  * Plugin URI:        https://wordpress.org/plugins/widget-subtitles/
  * Description:       Add a customizable subtitle to your widgets
- * Version:           1.1.2
+ * Version:           1.1.3-dev
  * Author:            Jory Hogeveen
  * Author URI:        http://www.keraweb.nl
  * Text Domain:       widget-subtitles
@@ -238,28 +238,35 @@ final class WS_Widget_Subtitles {
 		<?php } ?>
 
 		<script type="text/javascript">
-			;(function($){
+			;( function( $ ) {
 				<?php if ( $can_edit_location ) { ?>
+				var title = '#<?php echo $widget->get_field_id( 'title' ); ?>',
+					subtitle = '#<?php echo $widget->get_field_id( 'subtitle' ); ?>',
+					subtitle_location = '#<?php echo $widget->get_field_id( 'subtitle_location' ); ?>',
+					$title = $( title ),
+					$subtitle = $( subtitle ),
+					$subtitle_location = $( subtitle_location );
+
 				// show/hide subtitle location input.
-				if ( ! $('#<?php echo $widget->get_field_id( 'subtitle' ); ?>').val() ) {
-					$('#<?php echo $widget->get_field_id( 'subtitle_location' ); ?>').parent().hide();
+				if ( ! $subtitle.val() ) {
+					$subtitle_location.parent().hide();
 				}
-				$(document).on( 'keyup', '#<?php echo $widget->get_field_id( 'subtitle' ); ?>', function() {
+				$(document).on( 'keyup', subtitle, function() {
 					if ( $(this).val() ) {
-						$('#<?php echo $widget->get_field_id( 'subtitle_location' ); ?>').parent().slideDown('fast');
+						$subtitle_location.parent().slideDown('fast');
 					} else {
-						$('#<?php echo $widget->get_field_id( 'subtitle_location' ); ?>').parent().slideUp('fast');
+						$subtitle_location.parent().slideUp('fast');
 					}
 				} );
 				<?php } ?>
 				// Relocate subtitle input after title if available.
-				if ( $('#<?php echo $widget->get_field_id( 'title' ); ?>').parent('p').length ) {
-					$('#<?php echo $widget->get_field_id( 'subtitle' ); ?>').parent('p').detach().insertAfter( $('#<?php echo $widget->get_field_id( 'title' ); ?>').parent('p') );
+				if ( $title.parent('p').length ) {
+					$subtitle.parent('p').detach().insertAfter( $title.parent('p') );
 					<?php if ( $can_edit_location ) { ?>
-					$('#<?php echo $widget->get_field_id( 'subtitle_location' ); ?>').parent('p').detach().insertAfter( $('#<?php echo $widget->get_field_id( 'subtitle' ); ?>').parent('p') );
+					$subtitle_location.parent('p').detach().insertAfter( $subtitle.parent('p') );
 					<?php } ?>
 				}
-			})( jQuery );
+			} ) ( jQuery );
 		</script>
 
 		<?php
