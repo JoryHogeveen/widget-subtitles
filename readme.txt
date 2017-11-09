@@ -3,8 +3,9 @@ Contributors: keraweb
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=YGPLMLU7XQ9E8&lc=NL&item_name=Widget%20Subtitles&item_number=JWPP%2dWS&currency_code=EUR&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHostedGuest
 Tags: widget, widget subtitle, subtitle, subtitles, sub title, sidebar
 Requires at least: 3.0
-Tested up to: 4.8
-Stable tag: 1.1.2
+Tested up to: 4.9
+Requires PHP: 5.2.4
+Stable tag: 1.1.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -72,27 +73,32 @@ Or search for "Widget Subtitles" via your plugins menu.
 
 == Changelog ==
 
+= 1.1.3 =
+
+*	**Enhancement:** JavaScript improvements.
+*	**Compatibility:** Tested with WordPress 4.9.
+
 = 1.1.2 =
 
-*	Feature: new filter `widget_subtitles_default_location`. Sets the default location for subtitles.
-*	Feature: new filter `widget_subtitles_edit_location_capability`. Change the capability required to modify subtitle locations. [#8](https://github.com/JoryHogeveen/widget-subtitles/issues/8)
-*	Enhancement: Fix CodeClimate coding standards issues.
+*	**Feature:** new filter `widget_subtitles_default_location`. Sets the default location for subtitles.
+*	**Feature:** new filter `widget_subtitles_edit_location_capability`. Change the capability required to modify subtitle locations. [#8](https://github.com/JoryHogeveen/widget-subtitles/issues/8)
+*	**Enhancement:** Fix CodeClimate coding standards issues.
 *	Screenshots added
 
 Detailed info: [PR on GitHub](https://github.com/JoryHogeveen/widget-subtitles/pull/7)
 
 = 1.1.1 =
 
-*	Fixed code inspections from CodeClimate.
-*	Tested with WordPress 4.8.
+*	**Enhancement:** Fixed code inspections from CodeClimate.
+*	**Compatibility:** Tested with WordPress 4.8.
 
 Detailed info: [PR on GitHub](https://github.com/JoryHogeveen/widget-subtitles/pull/5)
 
 = 1.1 =
-*	Add extra parameters to the filter hooks.
+*	**Enhancement:** Add extra parameters to the filter hooks.
 
 = 1.0.1 =
-*	Update textdomain hook.
+*	**Enhancement:** Update textdomain hook.
 
 = 1.0 =
 *	First version.
