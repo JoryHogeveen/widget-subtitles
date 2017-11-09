@@ -11,7 +11,7 @@
  * Plugin Name:       Widget Subtitles
  * Plugin URI:        https://wordpress.org/plugins/widget-subtitles/
  * Description:       Add a customizable subtitle to your widgets
- * Version:           1.1.3-dev
+ * Version:           1.1.3-rc1
  * Author:            Jory Hogeveen
  * Author URI:        http://www.keraweb.nl
  * Text Domain:       widget-subtitles
@@ -50,7 +50,7 @@ if ( ! class_exists( 'WS_Widget_Subtitles' ) ) {
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Widget_Subtitles
  * @since   0.1
- * @version 1.1.2
+ * @version 1.1.3
  */
 final class WS_Widget_Subtitles {
 
