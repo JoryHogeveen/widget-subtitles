@@ -24,10 +24,11 @@ Since  1.0
 
 *	**Default:** `span`
 *	**Parameters:**
-	*	`string` Default element.
-	*	`string` Widget ID, widget name + instance number.
-	*	`string` Sidebar ID where this widget is located. (since 1.1)
-	*	`array`  All widget data. (since 1.1)
+	*	`string`    Default element.
+	*	`string`    Widget ID, widget name + instance number.
+	*	`string`    Sidebar ID where this widget is located. (since 1.1)
+	*	`array`     All widget data. (since 1.1)
+	*	`WP_Widget` The widget type class. (since 1.1.3)
 *	**Return:** `string` A valid HTML element.
 
 #### `widget_subtitles_classes`
@@ -36,10 +37,11 @@ Since  1.0
 
 *	**Default:** `array( 'widget-subtitle', 'widgetsubtitle', 'subtitle-{LOCATION}' );` *Where {LOCATION} stands for your selected location*.
 *	**Parameters:**
-	*	`array`  Default classes.
-	*	`string` Widget ID, widget name + instance number.
-	*	`string` Sidebar ID where this widget is located. (since 1.1)
-	*	`array`  All widget data. (since 1.1)
+	*	`string`    Default element.
+	*	`string`    Widget ID, widget name + instance number.
+	*	`string`    Sidebar ID where this widget is located. (since 1.1)
+	*	`array`     All widget data. (since 1.1)
+	*	`WP_Widget` The widget type class. (since 1.1.3)
 *	**Return:** `array` An array of CSS classes.
 
 #### `widget_subtitles_default_location`

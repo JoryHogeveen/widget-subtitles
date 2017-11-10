@@ -331,6 +331,7 @@ final class WS_Widget_Subtitles {
 		if ( empty( $widget['callback'][0]->option_name ) ) {
 			return $params;
 		}
+		$widget_obj = $widget['callback'][0];
 		$instance = get_option( $widget['callback'][0]->option_name );
 
 		// Check if there's an instance of the widget.
@@ -355,30 +356,34 @@ final class WS_Widget_Subtitles {
 			 * Filters subtitle element (default: span).
 			 *
 			 * @since  1.0
-			 * @since  1.1  Add extra parameters.
+			 * @since  1.1    Add extra parameters.
+			 * @since  1.1.3  Add WP_Widget instance parameter.
 			 *
-			 * @param  string  'span'       The HTML element.
-			 * @param  string  $widget_id   The widget ID (widget name + instance number).
-			 * @param  string  $sidebar_id  The sidebar ID where this widget is located.
-			 * @param  array   $widget      All widget data.
+			 * @param  string     'span'       The HTML element.
+			 * @param  string     $widget_id   The widget ID (widget name + instance number).
+			 * @param  string     $sidebar_id  The sidebar ID where this widget is located.
+			 * @param  array      $widget      All widget data.
+			 * @param  WP_Widget  $widget_obj  The Widget object.
 			 * @return string  A valid HTML element.
 			 */
-			$subtitle_element = apply_filters( 'widget_subtitles_element', 'span', $widget_id, $sidebar_id, $widget );
+			$subtitle_element = apply_filters( 'widget_subtitles_element', 'span', $widget_id, $sidebar_id, $widget, $widget_obj );
 
 			$subtitle_classes = $this->get_subtitle_classes( $subtitle_location );
 			/**
 			 * Allow filter for subtitle classes to overwrite, remove or add classes.
 			 *
 			 * @since  1.0
-			 * @since  1.1  Add extra parameters.
+			 * @since  1.1    Add extra parameters.
+			 * @since  1.1.3  Add WP_Widget instance parameter.
 			 *
-			 * @param  array   $subtitle_classes  The default classes.
-			 * @param  string  $widget_id         The widget ID (widget name + instance number).
-			 * @param  string  $sidebar_id        The sidebar ID where this widget is located.
-			 * @param  array   $widget            All widget data.
+			 * @param  array      $subtitle_classes  The default classes.
+			 * @param  string     $widget_id         The widget ID (widget name + instance number).
+			 * @param  string     $sidebar_id        The sidebar ID where this widget is located.
+			 * @param  array      $widget            All widget data.
+			 * @param  WP_Widget  $widget_obj  The Widget object.
 			 * @return array   An array of CSS classes.
 			 */
-			$subtitle_classes = apply_filters( 'widget_subtitles_classes', $subtitle_classes, $widget_id, $sidebar_id, $widget );
+			$subtitle_classes = apply_filters( 'widget_subtitles_classes', $subtitle_classes, $widget_id, $sidebar_id, $widget, $widget_obj );
 
 			// Create class string to use.
 			$subtitle_classes = is_array( $subtitle_classes ) ? '' . implode( ' ', $subtitle_classes ) . '' : '';
