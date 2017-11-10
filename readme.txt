@@ -57,6 +57,18 @@ Since  1.1.2
 *	**Parameters:** `string` The default capability.
 *	**Return:** `string` The new capability.
 
+= Filter: `widget_subtitles_available_locations` =
+Overwrites the available locations for a widget.  
+NOTE: You can currently only remove locations. New locations are not possible (yet).  
+Since  1.1.3  
+
+*	**Default:** `after-inside`, `after-outside`, `before-inside`, `before-outside`.
+*	**Parameters:**
+	*	`array`      The array of available locations.
+	*	`WP_Widget`  The widget type class.
+	*	`array`      The widget instance.
+*	**Return:** `array` Filtered list of available locations for this widget.
+
 You can use these filters inside your theme functions.php file or in a plugin.
 
 == Installation ==
@@ -77,6 +89,7 @@ Or search for "Widget Subtitles" via your plugins menu.
 
 = 1.1.3 =
 
+*	**Feature:** new filter `widget_subtitles_available_locations`. Overwrites the available locations for a widget.
 *	**Enhancement:** Add fourth `WP_Widget` object parameter to the `widget_subtitles_element` and `widget_subtitles_classes` filters.
 *	**Enhancement:** JavaScript improvements.
 *	**Compatibility:** Tested with WordPress 4.9.
