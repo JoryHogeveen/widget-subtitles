@@ -10,6 +10,8 @@ Add a customizable subtitle to your widgets
 [![License](https://img.shields.io/badge/license-GPL--2.0%2B-green.svg)](https://github.com/JoryHogeveen/widget-subtitles/blob/master/license.txt)
 [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=YGPLMLU7XQ9E8&lc=NL&item_name=Widget%20Subtitles&item_number=JWPP%2dWS&currency_code=EUR&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHostedGuest)
 
+![Widget Subtitles](https://raw.githubusercontent.com/JoryHogeveen/widget-subtitles/master/.github/assets/banner-1544x500.jpg)  
+
 ## Description
 
 This plugin adds a subtitle input field to all your widgets. You can also change the location of the subtitle and even use filters to change the subtitle output.
@@ -22,10 +24,11 @@ Since  1.0
 
 *	**Default:** `span`
 *	**Parameters:**
-	*	`string` Default element.
-	*	`string` Widget ID, widget name + instance number.
-	*	`string` Sidebar ID where this widget is located. (since 1.1)
-	*	`array`  All widget data. (since 1.1)
+	*	`string`    Default element.
+	*	`string`    Widget ID, widget name + instance number.
+	*	`string`    Sidebar ID where this widget is located. (since 1.1)
+	*	`array`     All widget data. (since 1.1)
+	*	`WP_Widget` The widget type class. (since 1.1.3)
 *	**Return:** `string` A valid HTML element.
 
 #### `widget_subtitles_classes`
@@ -34,10 +37,11 @@ Since  1.0
 
 *	**Default:** `array( 'widget-subtitle', 'widgetsubtitle', 'subtitle-{LOCATION}' );` *Where {LOCATION} stands for your selected location*.
 *	**Parameters:**
-	*	`array`  Default classes.
-	*	`string` Widget ID, widget name + instance number.
-	*	`string` Sidebar ID where this widget is located. (since 1.1)
-	*	`array`  All widget data. (since 1.1)
+	*	`string`    Default element.
+	*	`string`    Widget ID, widget name + instance number.
+	*	`string`    Sidebar ID where this widget is located. (since 1.1)
+	*	`array`     All widget data. (since 1.1)
+	*	`WP_Widget` The widget type class. (since 1.1.3)
 *	**Return:** `array` An array of CSS classes.
 
 #### `widget_subtitles_default_location`
@@ -57,6 +61,18 @@ Since  1.1.2
 *	**Return:** `string` The new capability.
 
 You can use these filters inside your theme functions.php file or in a plugin.
+
+#### `widget_subtitles_available_locations`
+Overwrites the available locations for a widget.  
+NOTE: You can currently only remove locations. New locations are not possible (yet).  
+Since  1.1.3  
+
+*	**Default:** `after-inside`, `after-outside`, `before-inside`, `before-outside`.
+*	**Parameters:**
+	*	`array`      The array of available locations.
+	*	`WP_Widget`  The widget type class.
+	*	`array`      The widget instance.
+*	**Return:** `array` Filtered list of available locations for this widget.
 
 ## Installation
 
