@@ -94,6 +94,8 @@ Or search for "Widget Subtitles" via your plugins menu.
 *	**Enhancement:** JavaScript improvements.
 *	**Compatibility:** Tested with WordPress 4.9.
 
+Detailed info: [PR on GitHub](https://github.com/JoryHogeveen/widget-subtitles/pull/9)
+
 = 1.1.2 =
 
 *	**Feature:** new filter `widget_subtitles_default_location`. Sets the default location for subtitles.
