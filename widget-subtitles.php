@@ -234,9 +234,11 @@ final class WS_Widget_Subtitles {
 
 		<?php
 		$locations = array();
+
 		if ( $can_edit_location ) {
 			$locations = $this->get_available_subtitle_locations( $widget, $instance );
 		}
+
 		if ( 1 < count( $locations ) ) {
 		?>
 		<p>
@@ -245,7 +247,9 @@ final class WS_Widget_Subtitles {
 			<?php
 			foreach ( (array) $locations as $location_key => $location_name ) {
 				?>
-				<option value="<?php echo $location_key; ?>" <?php selected( $instance['subtitle_location'], $location_key, true ); ?>><?php echo $location_name; ?></option>
+				<option value="<?php echo $location_key; ?>" <?php selected( $instance['subtitle_location'], $location_key, true ); ?>>
+					<?php echo $location_name; ?>
+				</option>
 				<?php
 			}
 			?>
@@ -257,12 +261,12 @@ final class WS_Widget_Subtitles {
 
 		<script type="text/javascript">
 			;( function( $ ) {
-				<?php if ( $can_edit_location ) { ?>
 				var title = '#<?php echo $widget->get_field_id( 'title' ); ?>',
 					subtitle = '#<?php echo $widget->get_field_id( 'subtitle' ); ?>',
-					subtitle_location = '#<?php echo $widget->get_field_id( 'subtitle_location' ); ?>',
 					$title = $( title ),
-					$subtitle = $( subtitle ),
+					$subtitle = $( subtitle );
+				<?php if ( $can_edit_location ) { ?>
+				var subtitle_location = '#<?php echo $widget->get_field_id( 'subtitle_location' ); ?>',
 					$subtitle_location = $( subtitle_location );
 
 				// show/hide subtitle location input.
@@ -278,7 +282,7 @@ final class WS_Widget_Subtitles {
 				} );
 				<?php } ?>
 				// Relocate subtitle input after title if available.
-				if ( $title.parent('p').length ) {
+				if ( $title.length && $title.parent('p').length ) {
 					$subtitle.parent('p').detach().insertAfter( $title.parent('p') );
 					<?php if ( $can_edit_location ) { ?>
 					$subtitle_location.parent('p').detach().insertAfter( $subtitle.parent('p') );
