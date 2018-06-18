@@ -2,7 +2,7 @@
 /**
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Widget_Subtitles
- * @since   0.1
+ * @since   0.1.0
  * @version 1.1.4
  * @licence GPL-2.0+
  * @link    https://github.com/JoryHogeveen/widget-subtitles
