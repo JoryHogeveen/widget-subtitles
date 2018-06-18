@@ -5,7 +5,7 @@ Tags: widget, widget subtitle, subtitle, subtitles, sub title, sidebar
 Requires at least: 3.0
 Tested up to: 4.9
 Requires PHP: 5.2.4
-Stable tag: 1.1.3
+Stable tag: 1.1.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -86,6 +86,14 @@ Or search for "Widget Subtitles" via your plugins menu.
 2. Frontend subtitle example (after title - inside heading)
 
 == Changelog ==
+
+= 1.1.4 =
+
+*	**Enhancement:** Form JS handling.
+*	**Enhancement:** Add support links on plugins overview page.
+*	**Maintenance:** Updated to CodeClimate v2.
+
+Detailed info: [PR on GitHub](https://github.com/JoryHogeveen/widget-subtitles/pull/10)
 
 = 1.1.3 =
 

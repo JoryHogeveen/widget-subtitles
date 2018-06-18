@@ -1,10 +1,46 @@
----
-engines:
-  duplication:
+version: "2"
+checks:
+  argument-count:
     enabled: true
     config:
-      languages:
-        - php
+      threshold: 5
+  complex-logic:
+    enabled: true
+    config:
+      threshold: 4
+  file-lines:
+    enabled: true
+    config:
+      threshold: 1000
+  method-complexity:
+    enabled: true
+    config:
+      threshold: 50 # Only check extreme cases
+  method-count: # Done in PHPMD
+    enabled: false
+    config:
+      threshold: 20
+  method-lines: # Done in PHPMD
+    enabled: false
+    config:
+      threshold: 100
+  nested-control-flow:
+    enabled: true
+    config:
+      threshold: 4
+  return-statements:
+    enabled: true
+    config:
+      threshold: 4
+  similar-code:
+    enabled: false
+    config:
+      threshold: #language-specific defaults. overrides affect all languages.
+  identical-code:
+    enabled: true
+    config:
+      threshold: #language-specific defaults. overrides affect all languages.
+plugins:
   fixme:
     enabled: true
   phpmd:
@@ -64,6 +100,9 @@ engines:
       # Disable: Expected 1 space after closing brace; newline found
       Squiz ControlStructures ControlSignature SpaceAfterCloseBrace:
         enabled: false
+      # Disable: Opening brace should be on the same line as the declaration for class
+      Generic Classes OpeningBraceSameLine BraceOnNewLine:
+        enabled: false
       # Disable: There must be exactly one blank line before the tags in a doc comment
       Generic Commenting DocComment SpacingBeforeTags:
         enabled: false
@@ -75,13 +114,6 @@ engines:
         enabled: false
       Generic WhiteSpace ScopeIndent IncorrectExact:
         enabled: false
-ratings:
-  paths:
-  - "**.css"
-  - "**.js"
-  - "**.jsx"
-  - "**.module"
-  - "**.php"
 exclude_paths:
-- tests/*
-- bin/*
+- "tests/*"
+- "bin/*"

@@ -2,8 +2,8 @@
 /**
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Widget_Subtitles
- * @since   0.1
- * @version 1.1.3
+ * @since   0.1.0
+ * @version 1.1.4
  * @licence GPL-2.0+
  * @link    https://github.com/JoryHogeveen/widget-subtitles
  *
@@ -11,7 +11,7 @@
  * Plugin Name:       Widget Subtitles
  * Plugin URI:        https://wordpress.org/plugins/widget-subtitles/
  * Description:       Add a customizable subtitle to your widgets
- * Version:           1.1.3
+ * Version:           1.1.4
  * Author:            Jory Hogeveen
  * Author URI:        http://www.keraweb.nl
  * Text Domain:       widget-subtitles
@@ -20,7 +20,7 @@
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.html
  * GitHub Plugin URI: https://github.com/JoryHogeveen/widget-subtitles
  *
- * @copyright 2015-2017 Jory Hogeveen
+ * @copyright 2015-2018 Jory Hogeveen
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -49,23 +49,31 @@ if ( ! class_exists( 'WS_Widget_Subtitles' ) ) {
  *
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Widget_Subtitles
- * @since   0.1
- * @version 1.1.3
+ * @since   0.1.0
+ * @version 1.1.4
  */
-final class WS_Widget_Subtitles {
-
+final class WS_Widget_Subtitles
+{
 	/**
 	 * The single instance of the class.
 	 *
-	 * @since  0.1
-	 * @var    WS_Widget_Subtitles
+	 * @since  0.1.0
+	 * @var    \WS_Widget_Subtitles
 	 */
 	private static $_instance = null;
 
 	/**
+	 * The plugin basename.
+	 *
+	 * @since  1.1.4
+	 * @var    string
+	 */
+	public static $_basename = '';
+
+	/**
 	 * Possible locations of the subtitle.
 	 *
-	 * @since  0.1
+	 * @since  0.1.0
 	 * @var    array
 	 */
 	private $locations = array();
@@ -89,11 +97,12 @@ final class WS_Widget_Subtitles {
 	/**
 	 * Constructor.
 	 *
-	 * @since   0.1
+	 * @since   0.1.0
 	 * @access  private
 	 */
 	private function __construct() {
 		self::$_instance = $this;
+		self::$_basename = plugin_basename( __FILE__ );
 
 		add_action( 'init', array( $this, 'init' ) );
 	}
@@ -103,7 +112,7 @@ final class WS_Widget_Subtitles {
 	 *
 	 * Ensures only one instance of Widget Subtitle is loaded or can be loaded.
 	 *
-	 * @since   0.1
+	 * @since   0.1.0
 	 * @access  public
 	 * @static
 	 * @see     ws_widget_subtitles()
@@ -119,7 +128,7 @@ final class WS_Widget_Subtitles {
 	/**
 	 * Init function/action and register all used hooks and data.
 	 *
-	 * @since   0.1
+	 * @since   0.1.0
 	 * @access  public
 	 * @return  void
 	 */
@@ -180,11 +189,14 @@ final class WS_Widget_Subtitles {
 		add_action( 'in_widget_form', array( $this, 'in_widget_form' ), 9, 3 );
 		add_filter( 'widget_update_callback', array( $this, 'widget_update_callback' ), 10, 4 );
 		add_filter( 'dynamic_sidebar_params', array( $this, 'dynamic_sidebar_params' ) );
+
+		// Add links to plugins page.
+		add_action( 'plugin_row_meta', array( $this, 'action_plugin_row_meta' ), 10, 2 );
 	}
 
 	/**
 	 * Load the plugin's translated strings.
-	 * @since   0.1
+	 * @since   0.1.0
 	 * @access  public
 	 */
 	public function load_plugin_textdomain() {
@@ -194,12 +206,12 @@ final class WS_Widget_Subtitles {
 	/**
 	 * Add a subtitle input field into the form.
 	 *
-	 * @since   0.1
+	 * @since   0.1.0
 	 * @access  public
 	 *
-	 * @param   WP_Widget  $widget
-	 * @param   null       $return
-	 * @param   array      $instance
+	 * @param   \WP_Widget  $widget
+	 * @param   null        $return
+	 * @param   array       $instance
 	 * @return  null
 	 */
 	public function in_widget_form( $widget, $return, $instance ) {
@@ -222,9 +234,11 @@ final class WS_Widget_Subtitles {
 
 		<?php
 		$locations = array();
+
 		if ( $can_edit_location ) {
 			$locations = $this->get_available_subtitle_locations( $widget, $instance );
 		}
+
 		if ( 1 < count( $locations ) ) {
 		?>
 		<p>
@@ -233,7 +247,9 @@ final class WS_Widget_Subtitles {
 			<?php
 			foreach ( (array) $locations as $location_key => $location_name ) {
 				?>
-				<option value="<?php echo $location_key; ?>" <?php selected( $instance['subtitle_location'], $location_key, true ); ?>><?php echo $location_name; ?></option>
+				<option value="<?php echo $location_key; ?>" <?php selected( $instance['subtitle_location'], $location_key, true ); ?>>
+					<?php echo $location_name; ?>
+				</option>
 				<?php
 			}
 			?>
@@ -245,12 +261,12 @@ final class WS_Widget_Subtitles {
 
 		<script type="text/javascript">
 			;( function( $ ) {
-				<?php if ( $can_edit_location ) { ?>
 				var title = '#<?php echo $widget->get_field_id( 'title' ); ?>',
 					subtitle = '#<?php echo $widget->get_field_id( 'subtitle' ); ?>',
-					subtitle_location = '#<?php echo $widget->get_field_id( 'subtitle_location' ); ?>',
 					$title = $( title ),
-					$subtitle = $( subtitle ),
+					$subtitle = $( subtitle );
+				<?php if ( $can_edit_location ) { ?>
+				var subtitle_location = '#<?php echo $widget->get_field_id( 'subtitle_location' ); ?>',
 					$subtitle_location = $( subtitle_location );
 
 				// show/hide subtitle location input.
@@ -266,7 +282,7 @@ final class WS_Widget_Subtitles {
 				} );
 				<?php } ?>
 				// Relocate subtitle input after title if available.
-				if ( $title.parent('p').length ) {
+				if ( $title.length && $title.parent('p').length ) {
 					$subtitle.parent('p').detach().insertAfter( $title.parent('p') );
 					<?php if ( $can_edit_location ) { ?>
 					$subtitle_location.parent('p').detach().insertAfter( $subtitle.parent('p') );
@@ -282,13 +298,13 @@ final class WS_Widget_Subtitles {
 	/**
 	 * Filter the widget’s settings before saving, return false to cancel saving (keep the old settings if updating).
 	 *
-	 * @since   0.1
+	 * @since   0.1.0
 	 * @access  public
 	 *
-	 * @param   array      $instance
-	 * @param   array      $new_instance
-	 * param   array      $old_instance
-	 * param   WP_Widget  $widget
+	 * @param   array       $instance
+	 * @param   array       $new_instance
+	 * param   array       $old_instance
+	 * param   \WP_Widget  $widget
 	 * @return  array
 	 */
 	public function widget_update_callback( $instance, $new_instance ) {
@@ -313,7 +329,7 @@ final class WS_Widget_Subtitles {
 	 * // Disable variable check because of global $wp_registered_widgets.
 	 * @SuppressWarnings(PHPMD.LongVariables)
 	 *
-	 * @since   0.1
+	 * @since   0.1.0
 	 * @access  public
 	 *
 	 * @global  $wp_registered_widgets
@@ -337,6 +353,7 @@ final class WS_Widget_Subtitles {
 		if ( empty( $widget['callback'][0]->option_name ) ) {
 			return $params;
 		}
+		/** @var \WP_Widget $widget_obj */
 		$widget_obj = $widget['callback'][0];
 		$instance = get_option( $widget['callback'][0]->option_name );
 
@@ -363,15 +380,15 @@ final class WS_Widget_Subtitles {
 			/**
 			 * Filters subtitle element (default: span).
 			 *
-			 * @since  1.0
-			 * @since  1.1    Add extra parameters.
+			 * @since  1.0.0
+			 * @since  1.1.0  Add extra parameters.
 			 * @since  1.1.3  Add WP_Widget instance parameter.
 			 *
-			 * @param  string     'span'       The HTML element.
-			 * @param  string     $widget_id   The widget ID (widget name + instance number).
-			 * @param  string     $sidebar_id  The sidebar ID where this widget is located.
-			 * @param  array      $widget      All widget data.
-			 * @param  WP_Widget  $widget_obj  The Widget object.
+			 * @param  string      'span'       The HTML element.
+			 * @param  string      $widget_id   The widget ID (widget name + instance number).
+			 * @param  string      $sidebar_id  The sidebar ID where this widget is located.
+			 * @param  array       $widget      All widget data.
+			 * @param  \WP_Widget  $widget_obj  The Widget object.
 			 * @return string  A valid HTML element.
 			 */
 			$subtitle_element = apply_filters( 'widget_subtitles_element', 'span', $widget_id, $sidebar_id, $widget, $widget_obj );
@@ -380,15 +397,15 @@ final class WS_Widget_Subtitles {
 			/**
 			 * Allow filter for subtitle classes to overwrite, remove or add classes.
 			 *
-			 * @since  1.0
-			 * @since  1.1    Add extra parameters.
+			 * @since  1.0.0
+			 * @since  1.1.0  Add extra parameters.
 			 * @since  1.1.3  Add WP_Widget instance parameter.
 			 *
-			 * @param  array      $subtitle_classes  The default classes.
-			 * @param  string     $widget_id         The widget ID (widget name + instance number).
-			 * @param  string     $sidebar_id        The sidebar ID where this widget is located.
-			 * @param  array      $widget            All widget data.
-			 * @param  WP_Widget  $widget_obj  The Widget object.
+			 * @param  array       $subtitle_classes  The default classes.
+			 * @param  string      $widget_id         The widget ID (widget name + instance number).
+			 * @param  string      $sidebar_id        The sidebar ID where this widget is located.
+			 * @param  array       $widget            All widget data.
+			 * @param  \WP_Widget  $widget_obj  The Widget object.
 			 * @return array   An array of CSS classes.
 			 */
 			$subtitle_classes = apply_filters( 'widget_subtitles_classes', $subtitle_classes, $widget_id, $sidebar_id, $widget, $widget_obj );
@@ -504,8 +521,8 @@ final class WS_Widget_Subtitles {
 	 * Get the available locations for a widget.
 	 *
 	 * @since   1.1.3
-	 * @param   WP_Widget  $widget
-	 * @param   array  $instance
+	 * @param   \WP_Widget  $widget
+	 * @param   array       $instance
 	 * @return  array
 	 */
 	public function get_available_subtitle_locations( $widget, $instance ) {
@@ -516,9 +533,9 @@ final class WS_Widget_Subtitles {
 		 * @todo Also get the sidebar info (if available).
 		 *
 		 * @since   1.1.3
-		 * @param   array      $locations  The array of available locations.
-		 * @param   WP_Widget  $widget     The widget type class.
-		 * @param   array      $instance   The widget instance.
+		 * @param   array       $locations  The array of available locations.
+		 * @param   \WP_Widget  $widget     The widget type class.
+		 * @param   array       $instance   The widget instance.
 		 * @return  array  $locations  The available locations: key => label.
 		 */
 		$locations = (array) apply_filters( 'widget_subtitles_available_locations', $this->locations, $widget, $instance );
@@ -526,9 +543,101 @@ final class WS_Widget_Subtitles {
 	}
 
 	/**
+	 * Show row meta on the plugin screen.
+	 *
+	 * @since   1.1.4
+	 * @see     \WP_Plugins_List_Table::single_row()
+	 * @param   array[]  $links  The existing links.
+	 * @param   string   $file   The plugin file.
+	 * @return  array
+	 */
+	public function action_plugin_row_meta( $links, $file ) {
+		if ( self::$_basename === $file ) {
+			foreach ( $this->get_links() as $id => $link ) {
+				$icon = '<span class="dashicons ' . $link['icon'] . '" style="font-size: inherit; line-height: inherit; display: inline; vertical-align: text-top;"></span>';
+				$title = $icon . ' ' . esc_html( $link['title'] );
+				$links[ $id ] = '<a href="' . esc_url( $link['url'] ) . '" target="_blank">' . $title . '</a>';
+			}
+		}
+		return $links;
+	}
+
+	/**
+	 * Plugin links.
+	 *
+	 * @since   1.1.4
+	 * @return  array[]
+	 */
+	public function get_links() {
+		static $links;
+		if ( ! empty( $links ) ) {
+			return $links;
+		}
+
+		$links = array(
+			'support' => array(
+				'title' => __( 'Support', OCS_DOMAIN ),
+				'description' => __( 'Need support?', OCS_DOMAIN ),
+				'icon'  => 'dashicons-sos',
+				'url'   => 'https://wordpress.org/support/plugin/widget-subtitles/',
+			),
+			'slack' => array(
+				'title' => __( 'Slack', OCS_DOMAIN ),
+				'description' => __( 'Quick help via Slack', OCS_DOMAIN ),
+				'icon'  => 'dashicons-format-chat',
+				'url'   => 'https://keraweb.slack.com/messages/plugin-ws/',
+			),
+			'review' => array(
+				'title' => __( 'Review', OCS_DOMAIN ),
+				'description' => __( 'Give 5 stars on WordPress.org!', OCS_DOMAIN ),
+				'icon'  => 'dashicons-star-filled',
+				'url'   => 'https://wordpress.org/support/plugin/widget-subtitles/reviews/',
+			),
+			'translate' => array(
+				'title' => __( 'Translate', OCS_DOMAIN ),
+				'description' => __( 'Help translating this plugin!', OCS_DOMAIN ),
+				'icon'  => 'dashicons-translation',
+				'url'   => 'https://translate.wordpress.org/projects/wp-plugins/widget-subtitles',
+			),
+			'issue' => array(
+				'title' => __( 'Report issue', OCS_DOMAIN ),
+				'description' => __( 'Have ideas or a bug report?', OCS_DOMAIN ),
+				'icon'  => 'dashicons-lightbulb',
+				'url'   => 'https://github.com/JoryHogeveen/widget-subtitles/issues',
+			),
+			'docs' => array(
+				'title' => __( 'Documentation', OCS_DOMAIN ),
+				'description' => __( 'Documentation', OCS_DOMAIN ),
+				'icon'  => 'dashicons-book-alt',
+				'url'   => 'https://github.com/JoryHogeveen/widget-subtitles/', //wiki
+			),
+			'github' => array(
+				'title' => __( 'GitHub', OCS_DOMAIN ),
+				'description' => __( 'Follow and/or contribute on GitHub', OCS_DOMAIN ),
+				'icon'  => 'dashicons-editor-code',
+				'url'   => 'https://github.com/JoryHogeveen/widget-subtitles/tree/dev',
+			),
+			'donate' => array(
+				'title' => __( 'Donate', OCS_DOMAIN ),
+				'description' => __( 'Buy me a coffee!', OCS_DOMAIN ),
+				'icon'  => 'dashicons-smiley',
+				'url'   => 'https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=YGPLMLU7XQ9E8&lc=NL&item_name=Widget%20Subtitles&item_number=JWPP%2dWS&currency_code=EUR&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHostedGuest',
+			),
+			'plugins' => array(
+				'title' => __( 'Plugins', OCS_DOMAIN ),
+				'description' => __( 'Check out my other WordPress plugins', OCS_DOMAIN ),
+				'icon'  => 'dashicons-admin-plugins',
+				'url'   => 'https://profiles.wordpress.org/keraweb/#content-plugins',
+			),
+		);
+
+		return $links;
+	}
+
+	/**
 	 * Magic method to output a string if trying to use the object as a string.
 	 *
-	 * @since   0.1
+	 * @since   0.1.0
 	 * @access  public
 	 * @return  string
 	 */
@@ -539,7 +648,7 @@ final class WS_Widget_Subtitles {
 	/**
 	 * Magic method to keep the object from being cloned.
 	 *
-	 * @since   0.1
+	 * @since   0.1.0
 	 * @access  public
 	 * @return  void
 	 */
@@ -554,7 +663,7 @@ final class WS_Widget_Subtitles {
 	/**
 	 * Magic method to keep the object from being unserialized.
 	 *
-	 * @since   0.1
+	 * @since   0.1.0
 	 * @access  public
 	 * @return  void
 	 */
@@ -569,10 +678,10 @@ final class WS_Widget_Subtitles {
 	/**
 	 * Magic method to prevent a fatal error when calling a method that doesn't exist.
 	 *
-	 * @since   0.1
+	 * @since   0.1.0
 	 * @access  public
-	 * @param   string $method
-	 * @param   array  $args
+	 * @param   string  $method
+	 * @param   array   $args
 	 * @return  null
 	 */
 	public function __call( $method = '', $args = array() ) {
@@ -592,8 +701,8 @@ final class WS_Widget_Subtitles {
  *
  * Returns the main instance of Widget_Subtitles to prevent the need to use globals.
  *
- * @since   0.1
- * @return  WS_Widget_Subtitles
+ * @since   0.1.0
+ * @return  \WS_Widget_Subtitles
  */
 function ws_widget_subtitles() {
 	return WS_Widget_Subtitles::get_instance();
