@@ -63,6 +63,14 @@ final class WS_Widget_Subtitles {
 	private static $_instance = null;
 
 	/**
+	 * The plugin basename.
+	 *
+	 * @since  1.1.4
+	 * @var    string
+	 */
+	public static $_basename = '';
+
+	/**
 	 * Possible locations of the subtitle.
 	 *
 	 * @since  0.1
@@ -94,6 +102,7 @@ final class WS_Widget_Subtitles {
 	 */
 	private function __construct() {
 		self::$_instance = $this;
+		self::$_basename = plugin_basename( __FILE__ );
 
 		add_action( 'init', array( $this, 'init' ) );
 	}
@@ -180,6 +189,9 @@ final class WS_Widget_Subtitles {
 		add_action( 'in_widget_form', array( $this, 'in_widget_form' ), 9, 3 );
 		add_filter( 'widget_update_callback', array( $this, 'widget_update_callback' ), 10, 4 );
 		add_filter( 'dynamic_sidebar_params', array( $this, 'dynamic_sidebar_params' ) );
+
+		// Add links to plugins page.
+		add_action( 'plugin_row_meta', array( $this, 'action_plugin_row_meta' ), 10, 2 );
 	}
 
 	/**
@@ -523,6 +535,98 @@ final class WS_Widget_Subtitles {
 		 */
 		$locations = (array) apply_filters( 'widget_subtitles_available_locations', $this->locations, $widget, $instance );
 		return array_intersect_key( $this->locations, $locations );
+	}
+
+	/**
+	 * Show row meta on the plugin screen.
+	 *
+	 * @since   1.1.4
+	 * @see     \WP_Plugins_List_Table::single_row()
+	 * @param   array[]  $links  The existing links.
+	 * @param   string   $file   The plugin file.
+	 * @return  array
+	 */
+	public function action_plugin_row_meta( $links, $file ) {
+		if ( self::$_basename === $file ) {
+			foreach ( $this->get_links() as $id => $link ) {
+				$icon = '<span class="dashicons ' . $link['icon'] . '" style="font-size: inherit; line-height: inherit; display: inline; vertical-align: text-top;"></span>';
+				$title = $icon . ' ' . esc_html( $link['title'] );
+				$links[ $id ] = '<a href="' . esc_url( $link['url'] ) . '" target="_blank">' . $title . '</a>';
+			}
+		}
+		return $links;
+	}
+
+	/**
+	 * Plugin links.
+	 *
+	 * @since   1.1.4
+	 * @return  array[]
+	 */
+	public function get_links() {
+		static $links;
+		if ( ! empty( $links ) ) {
+			return $links;
+		}
+
+		$links = array(
+			'support' => array(
+				'title' => __( 'Support', OCS_DOMAIN ),
+				'description' => __( 'Need support?', OCS_DOMAIN ),
+				'icon'  => 'dashicons-sos',
+				'url'   => 'https://wordpress.org/support/plugin/widget-subtitles/',
+			),
+			'slack' => array(
+				'title' => __( 'Slack', OCS_DOMAIN ),
+				'description' => __( 'Quick help via Slack', OCS_DOMAIN ),
+				'icon'  => 'dashicons-format-chat',
+				'url'   => 'https://keraweb.slack.com/messages/plugin-ws/',
+			),
+			'review' => array(
+				'title' => __( 'Review', OCS_DOMAIN ),
+				'description' => __( 'Give 5 stars on WordPress.org!', OCS_DOMAIN ),
+				'icon'  => 'dashicons-star-filled',
+				'url'   => 'https://wordpress.org/support/plugin/widget-subtitles/reviews/',
+			),
+			'translate' => array(
+				'title' => __( 'Translate', OCS_DOMAIN ),
+				'description' => __( 'Help translating this plugin!', OCS_DOMAIN ),
+				'icon'  => 'dashicons-translation',
+				'url'   => 'https://translate.wordpress.org/projects/wp-plugins/widget-subtitles',
+			),
+			'issue' => array(
+				'title' => __( 'Report issue', OCS_DOMAIN ),
+				'description' => __( 'Have ideas or a bug report?', OCS_DOMAIN ),
+				'icon'  => 'dashicons-lightbulb',
+				'url'   => 'https://github.com/JoryHogeveen/widget-subtitles/issues',
+			),
+			'docs' => array(
+				'title' => __( 'Documentation', OCS_DOMAIN ),
+				'description' => __( 'Documentation', OCS_DOMAIN ),
+				'icon'  => 'dashicons-book-alt',
+				'url'   => 'https://github.com/JoryHogeveen/widget-subtitles/', //wiki
+			),
+			'github' => array(
+				'title' => __( 'GitHub', OCS_DOMAIN ),
+				'description' => __( 'Follow and/or contribute on GitHub', OCS_DOMAIN ),
+				'icon'  => 'dashicons-editor-code',
+				'url'   => 'https://github.com/JoryHogeveen/widget-subtitles/tree/dev',
+			),
+			'donate' => array(
+				'title' => __( 'Donate', OCS_DOMAIN ),
+				'description' => __( 'Buy me a coffee!', OCS_DOMAIN ),
+				'icon'  => 'dashicons-smiley',
+				'url'   => 'https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=YGPLMLU7XQ9E8&lc=NL&item_name=Widget%20Subtitles&item_number=JWPP%2dWS&currency_code=EUR&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHostedGuest',
+			),
+			'plugins' => array(
+				'title' => __( 'Plugins', OCS_DOMAIN ),
+				'description' => __( 'Check out my other WordPress plugins', OCS_DOMAIN ),
+				'icon'  => 'dashicons-admin-plugins',
+				'url'   => 'https://profiles.wordpress.org/keraweb/#content-plugins',
+			),
+		);
+
+		return $links;
 	}
 
 	/**
