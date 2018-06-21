@@ -3,7 +3,7 @@
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Widget_Subtitles
  * @since   0.1.0
- * @version 1.1.4
+ * @version 1.1.4.1
  * @licence GPL-2.0+
  * @link    https://github.com/JoryHogeveen/widget-subtitles
  *
@@ -11,7 +11,7 @@
  * Plugin Name:       Widget Subtitles
  * Plugin URI:        https://wordpress.org/plugins/widget-subtitles/
  * Description:       Add a customizable subtitle to your widgets
- * Version:           1.1.4
+ * Version:           1.1.4.1
  * Author:            Jory Hogeveen
  * Author URI:        http://www.keraweb.nl
  * Text Domain:       widget-subtitles
@@ -50,7 +50,7 @@ if ( ! class_exists( 'WS_Widget_Subtitles' ) ) {
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Widget_Subtitles
  * @since   0.1.0
- * @version 1.1.4
+ * @version 1.1.4.1
  */
 final class WS_Widget_Subtitles
 {
@@ -69,6 +69,14 @@ final class WS_Widget_Subtitles
 	 * @var    string
 	 */
 	public static $_basename = '';
+
+	/**
+	 * The plugin i18n domain.
+	 *
+	 * @since  1.1.4.1
+	 * @var    string
+	 */
+	public static $_domain = 'widget-subtitles';
 
 	/**
 	 * Possible locations of the subtitle.
@@ -144,10 +152,10 @@ final class WS_Widget_Subtitles
 		 */
 		$this->location_cap = apply_filters( 'widget_subtitles_edit_location_capability', $this->location_cap );
 
-		$loc['before']  = __( 'Before title', 'widget-subtitles' );
-		$loc['after']   = __( 'After title', 'widget-subtitles' );
-		$loc['outside'] = __( 'Outside heading', 'widget-subtitles' );
-		$loc['inside']  = __( 'Inside heading', 'widget-subtitles' );
+		$loc['before']  = __( 'Before title', self::$_domain );
+		$loc['after']   = __( 'After title', self::$_domain );
+		$loc['outside'] = __( 'Outside heading', self::$_domain );
+		$loc['inside']  = __( 'Inside heading', self::$_domain );
 
 		/**
 		 * Sets the default location for subtitles.
@@ -174,7 +182,7 @@ final class WS_Widget_Subtitles
 		$default = implode( ' - ', $default );
 
 		$this->locations = array(
-			'' => __( 'Default', 'widget-subtitles' ) . ' (' . $default . ')',
+			'' => __( 'Default', self::$_domain ) . ' (' . $default . ')',
 			// before title, outside title element.
 			'before-outside' => $loc['before'] . ' - ' . $loc['outside'],
 			// before title, inside title element
@@ -200,7 +208,7 @@ final class WS_Widget_Subtitles
 	 * @access  public
 	 */
 	public function load_plugin_textdomain() {
-		load_plugin_textdomain( 'widget-subtitles', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
+		load_plugin_textdomain( self::$_domain, false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 	}
 
 	/**
@@ -228,7 +236,7 @@ final class WS_Widget_Subtitles
 		?>
 
 		<p>
-			<label for="<?php echo $widget->get_field_id( 'subtitle' ); ?>"><?php esc_html_e( 'Subtitle', 'widget-subtitles' ); ?>:</label>
+			<label for="<?php echo $widget->get_field_id( 'subtitle' ); ?>"><?php esc_html_e( 'Subtitle', self::$_domain ); ?>:</label>
 			<input class="widefat" id="<?php echo $widget->get_field_id( 'subtitle' ); ?>" name="<?php echo $widget->get_field_name( 'subtitle' ); ?>" type="text" value="<?php echo esc_attr( strip_tags( $instance['subtitle'] ) ); ?>"/>
 		</p>
 
@@ -242,7 +250,7 @@ final class WS_Widget_Subtitles
 		if ( 1 < count( $locations ) ) {
 		?>
 		<p>
-			<label for="<?php echo $widget->get_field_id( 'subtitle_location' ); ?>"><?php esc_html_e( 'Subtitle location', 'widget-subtitles' ); ?>:</label>
+			<label for="<?php echo $widget->get_field_id( 'subtitle_location' ); ?>"><?php esc_html_e( 'Subtitle location', self::$_domain ); ?>:</label>
 			<select name="<?php echo $widget->get_field_name( 'subtitle_location' ); ?>" id="<?php echo $widget->get_field_id( 'subtitle_location' ); ?>">
 			<?php
 			foreach ( (array) $locations as $location_key => $location_name ) {
@@ -576,56 +584,56 @@ final class WS_Widget_Subtitles
 
 		$links = array(
 			'support' => array(
-				'title' => __( 'Support', OCS_DOMAIN ),
-				'description' => __( 'Need support?', OCS_DOMAIN ),
+				'title' => __( 'Support', self::$_domain ),
+				'description' => __( 'Need support?', self::$_domain ),
 				'icon'  => 'dashicons-sos',
 				'url'   => 'https://wordpress.org/support/plugin/widget-subtitles/',
 			),
 			'slack' => array(
-				'title' => __( 'Slack', OCS_DOMAIN ),
-				'description' => __( 'Quick help via Slack', OCS_DOMAIN ),
+				'title' => __( 'Slack', self::$_domain ),
+				'description' => __( 'Quick help via Slack', self::$_domain ),
 				'icon'  => 'dashicons-format-chat',
 				'url'   => 'https://keraweb.slack.com/messages/plugin-ws/',
 			),
 			'review' => array(
-				'title' => __( 'Review', OCS_DOMAIN ),
-				'description' => __( 'Give 5 stars on WordPress.org!', OCS_DOMAIN ),
+				'title' => __( 'Review', self::$_domain ),
+				'description' => __( 'Give 5 stars on WordPress.org!', self::$_domain ),
 				'icon'  => 'dashicons-star-filled',
 				'url'   => 'https://wordpress.org/support/plugin/widget-subtitles/reviews/',
 			),
 			'translate' => array(
-				'title' => __( 'Translate', OCS_DOMAIN ),
-				'description' => __( 'Help translating this plugin!', OCS_DOMAIN ),
+				'title' => __( 'Translate', self::$_domain ),
+				'description' => __( 'Help translating this plugin!', self::$_domain ),
 				'icon'  => 'dashicons-translation',
 				'url'   => 'https://translate.wordpress.org/projects/wp-plugins/widget-subtitles',
 			),
 			'issue' => array(
-				'title' => __( 'Report issue', OCS_DOMAIN ),
-				'description' => __( 'Have ideas or a bug report?', OCS_DOMAIN ),
+				'title' => __( 'Report issue', self::$_domain ),
+				'description' => __( 'Have ideas or a bug report?', self::$_domain ),
 				'icon'  => 'dashicons-lightbulb',
 				'url'   => 'https://github.com/JoryHogeveen/widget-subtitles/issues',
 			),
 			'docs' => array(
-				'title' => __( 'Documentation', OCS_DOMAIN ),
-				'description' => __( 'Documentation', OCS_DOMAIN ),
+				'title' => __( 'Documentation', self::$_domain ),
+				'description' => __( 'Documentation', self::$_domain ),
 				'icon'  => 'dashicons-book-alt',
 				'url'   => 'https://github.com/JoryHogeveen/widget-subtitles/', //wiki
 			),
 			'github' => array(
-				'title' => __( 'GitHub', OCS_DOMAIN ),
-				'description' => __( 'Follow and/or contribute on GitHub', OCS_DOMAIN ),
+				'title' => __( 'GitHub', self::$_domain ),
+				'description' => __( 'Follow and/or contribute on GitHub', self::$_domain ),
 				'icon'  => 'dashicons-editor-code',
 				'url'   => 'https://github.com/JoryHogeveen/widget-subtitles/tree/dev',
 			),
 			'donate' => array(
-				'title' => __( 'Donate', OCS_DOMAIN ),
-				'description' => __( 'Buy me a coffee!', OCS_DOMAIN ),
+				'title' => __( 'Donate', self::$_domain ),
+				'description' => __( 'Buy me a coffee!', self::$_domain ),
 				'icon'  => 'dashicons-smiley',
 				'url'   => 'https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=YGPLMLU7XQ9E8&lc=NL&item_name=Widget%20Subtitles&item_number=JWPP%2dWS&currency_code=EUR&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHostedGuest',
 			),
 			'plugins' => array(
-				'title' => __( 'Plugins', OCS_DOMAIN ),
-				'description' => __( 'Check out my other WordPress plugins', OCS_DOMAIN ),
+				'title' => __( 'Plugins', self::$_domain ),
+				'description' => __( 'Check out my other WordPress plugins', self::$_domain ),
 				'icon'  => 'dashicons-admin-plugins',
 				'url'   => 'https://profiles.wordpress.org/keraweb/#content-plugins',
 			),
@@ -655,7 +663,7 @@ final class WS_Widget_Subtitles
 	public function __clone() {
 		_doing_it_wrong(
 			__FUNCTION__,
-			esc_html( get_class( $this ) . ': ' . __( 'This class does not want to be cloned', 'widget-subtitles' ) ),
+			esc_html( get_class( $this ) . ': ' . __( 'This class does not want to be cloned', self::$_domain ) ),
 			null
 		);
 	}
@@ -670,7 +678,7 @@ final class WS_Widget_Subtitles
 	public function __wakeup() {
 		_doing_it_wrong(
 			__FUNCTION__,
-			esc_html( get_class( $this ) . ': ' . __( 'This class does not want to wake up', 'widget-subtitles' ) ),
+			esc_html( get_class( $this ) . ': ' . __( 'This class does not want to wake up', self::$_domain ) ),
 			null
 		);
 	}
@@ -687,7 +695,7 @@ final class WS_Widget_Subtitles
 	public function __call( $method = '', $args = array() ) {
 		_doing_it_wrong(
 			esc_html( get_class( $this ) . "::{$method}" ),
-			esc_html__( 'Method does not exist.', 'widget-subtitles' ),
+			esc_html__( 'Method does not exist.', self::$_domain ),
 			null
 		);
 		unset( $method, $args );

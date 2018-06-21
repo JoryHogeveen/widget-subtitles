@@ -14,6 +14,13 @@ class PluginTest extends WP_UnitTestCase {
 		$this->assertTrue( is_plugin_active( TEST_WS_PLUGIN_PATH ) );
 	}
 
+	// Check for PHP errors
+	function test_general() {
+		$ws = ws_widget_subtitles();
+		$ws->get_links();
+	}
+
+	// Check add_subtitle() method.
 	function test_add_subtitle() {
 		$ws = ws_widget_subtitles();
 
