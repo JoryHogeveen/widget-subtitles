@@ -552,8 +552,12 @@ final class WS_Widget_Subtitles
 		// Add subtitle location classes.
 		$subtitle_classes[] = 'subtitle-' . $location;
 		$location_classes = explode( '-', $location );
-		foreach ( $location_classes as $location_class ) {
-			$subtitle_classes[] = 'subtitle-' . $location_class;
+		// Prevent duplicated classes.
+		if ( 1 < count( $location_classes ) ) {
+			// Add location part classes.
+			foreach ( $location_classes as $location_class ) {
+				$subtitle_classes[] = 'subtitle-' . $location_class;
+			}
 		}
 		return $subtitle_classes;
 	}
