@@ -517,15 +517,17 @@ final class WS_Widget_Subtitles
 	 * Get the sidebar ID related to a widget ID.
 	 *
 	 * @since   1.1.1
+	 * @since   1.2.0   Make use of `wp_get_sidebars_widgets()`.
 	 * @access  public
 	 * @param   string  $widget_id  The widget identifier.
 	 * @return  string
 	 */
 	public function get_widget_sidebar_id( $widget_id ) {
-		global $_wp_sidebars_widgets;
+		//global $_wp_sidebars_widgets;
+		$sidebars_widgets = wp_get_sidebars_widgets();
 		$sidebar_id = '';
-		if ( is_array( $_wp_sidebars_widgets ) ) {
-			foreach ( $_wp_sidebars_widgets as $key => $widgets ) {
+		if ( is_array( $sidebars_widgets ) ) {
+			foreach ( $sidebars_widgets as $key => $widgets ) {
 				if ( is_array( $widgets ) && in_array( (string) $widget_id, array_map( 'strval', $widgets ), true ) ) {
 					// Found!
 					$sidebar_id = $key;
