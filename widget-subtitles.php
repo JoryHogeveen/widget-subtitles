@@ -582,16 +582,17 @@ final class WS_Widget_Subtitles
 
 		/**
 		 * Filter the available locations.
+		 * Note: Location keys must be strings!
 		 *
 		 * @since   1.1.3
 		 * @since   1.2.0  Allow custom location + add `$widget_id` and `$sidebar_id` parameters.
 		 *
-		 * @param   array       $locations   The array of available locations.
+		 * @param   string[]    $locations   The array of available locations.
 		 * @param   \WP_Widget  $widget_obj  The widget object.
 		 * @param   array       $instance    The widget instance.
 		 * @param   string      $widget_id   The widget ID (widget name + instance number).
 		 * @param   string      $sidebar_id  The sidebar ID where this widget is located.
-		 * @return  array  $locations  The available locations: key => label.
+		 * @return  string[]  $locations  The available locations: key => label.
 		 */
 		return (array) apply_filters( 'widget_subtitles_available_locations', $this->locations, $widget_obj, $instance, $widget_id, $sidebar_id );
 	}

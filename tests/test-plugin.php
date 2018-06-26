@@ -134,16 +134,6 @@ class PluginTest extends WP_UnitTestCase {
 				'start'  => array(),
 				'data'   => array(
 					'subtitle' => 'test',
-					'subtitle_location' => '1', // Not valid.
-				),
-				'result' => array(
-					'subtitle' => 'test',
-				),
-			),
-			array(
-				'start'  => array(),
-				'data'   => array(
-					'subtitle' => 'test',
 					'subtitle_location' => '', // Not valid.
 				),
 				'result' => array(
