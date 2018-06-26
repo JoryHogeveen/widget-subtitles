@@ -450,13 +450,16 @@ final class WS_Widget_Subtitles
 	 * Add a subtitle in the widget parameters.
 	 *
 	 * @since   1.1.2
+	 * @since   1.2.0  Added optional `$widget_obj` and `$sidebar_id` parameters.
 	 * @access  public
-	 * @param   array   $params             Widget parameters.
-	 * @param   string  $subtitle           The subtitle, may contain HTML.
-	 * @param   string  $subtitle_location  The subtitle location.
+	 * @param   array       $params             Widget parameters.
+	 * @param   string      $subtitle           The subtitle, may contain HTML.
+	 * @param   string      $subtitle_location  The subtitle location.
+	 * @param   \WP_Widget  $widget_obj         The Widget object.
+	 * @param   string      $sidebar_id         The sidebar ID where this widget is located.
 	 * @return  array
 	 */
-	public function add_subtitle( $params, $subtitle, $subtitle_location = '' ) {
+	public function add_subtitle( $params, $subtitle, $subtitle_location = '', $widget_obj = null, $sidebar_id = '' ) {
 
 		if ( empty( $subtitle_location ) ) {
 			$subtitle_location = $this->default_location;
@@ -488,6 +491,22 @@ final class WS_Widget_Subtitles
 
 			case 'after-outside':
 				$params['after_title'] = $params['after_title'] . $subtitle;
+				break;
+
+			default:
+				/**
+				 * Add subtitle at a custom location
+				 *
+				 * @since  0.2.0
+				 *
+				 * @param  array       $params             Widget parameters.
+				 * @param  string      $subtitle           The subtitle.
+				 * @param  string      $subtitle_location  The selected subtitle location.
+				 * @param  \WP_Widget  $widget_obj         The widget object.
+				 * @param  string      $sidebar_id         The sidebar ID where this widget is located.
+				 * @return array
+				 */
+				$params = apply_filters( 'widget_subtitles_add_subtitle', $params, $subtitle, $subtitle_location, $widget_obj, $sidebar_id );
 				break;
 		}
 
