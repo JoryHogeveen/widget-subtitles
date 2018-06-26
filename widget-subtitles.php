@@ -423,7 +423,19 @@ final class WS_Widget_Subtitles
 
 			// Start the output.
 			$subtitle = '<' . $subtitle_element . ' class="' . $subtitle_classes . '">';
-			$subtitle .= $instance['subtitle'];
+			/**
+			 * Allow filter to change a widget subtitle.
+			 *
+			 * @since  1.2.0
+			 *
+			 * @param  string      $subtitle    The subtitle.
+			 * @param  string      $widget_id   The widget ID (widget name + instance number).
+			 * @param  string      $sidebar_id  The sidebar ID where this widget is located.
+			 * @param  array       $widget      All widget data.
+			 * @param  \WP_Widget  $widget_obj  The Widget object.
+			 * @return string  The new subtitle.
+			 */
+			$subtitle .= apply_filters( 'widget_subtitle', $instance['subtitle'], $widget_id, $sidebar_id, $widget, $widget_obj );
 			$subtitle .= '</' . $subtitle_element . '>';
 
 			// Add the subtitle.
