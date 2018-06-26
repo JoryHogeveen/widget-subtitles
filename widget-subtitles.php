@@ -3,7 +3,7 @@
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Widget_Subtitles
  * @since   0.1.0
- * @version 1.1.4.1
+ * @version 1.2.0-dev
  * @licence GPL-2.0+
  * @link    https://github.com/JoryHogeveen/widget-subtitles
  *
@@ -11,7 +11,7 @@
  * Plugin Name:       Widget Subtitles
  * Plugin URI:        https://wordpress.org/plugins/widget-subtitles/
  * Description:       Add a customizable subtitle to your widgets
- * Version:           1.1.4.1
+ * Version:           1.2-dev
  * Author:            Jory Hogeveen
  * Author URI:        http://www.keraweb.nl
  * Text Domain:       widget-subtitles
@@ -50,7 +50,7 @@ if ( ! class_exists( 'WS_Widget_Subtitles' ) ) {
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Widget_Subtitles
  * @since   0.1.0
- * @version 1.1.4.1
+ * @version 1.2.0
  */
 final class WS_Widget_Subtitles
 {
@@ -413,8 +413,8 @@ final class WS_Widget_Subtitles
 			 * @param  string      $widget_id         The widget ID (widget name + instance number).
 			 * @param  string      $sidebar_id        The sidebar ID where this widget is located.
 			 * @param  array       $widget            All widget data.
-			 * @param  \WP_Widget  $widget_obj  The Widget object.
-			 * @return array   An array of CSS classes.
+			 * @param  \WP_Widget  $widget_obj        The Widget object.
+			 * @return array  An array of CSS classes.
 			 */
 			$subtitle_classes = apply_filters( 'widget_subtitles_classes', $subtitle_classes, $widget_id, $sidebar_id, $widget, $widget_obj );
 
