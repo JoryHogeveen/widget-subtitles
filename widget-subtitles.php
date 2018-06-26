@@ -560,25 +560,33 @@ final class WS_Widget_Subtitles
 	 * Get the available locations for a widget.
 	 *
 	 * @since   1.1.3
-	 * @param   \WP_Widget  $widget
+	 * @since   1.2.0  Optional `$sidebar_id` parameter.
+	 * @param   \WP_Widget  $widget_obj
 	 * @param   array       $instance
+	 * @param   string      $sidebar_id  The sidebar ID where this widget is located.
 	 * @return  array
 	 */
-	public function get_available_subtitle_locations( $widget, $instance ) {
+	public function get_available_subtitle_locations( $widget_obj, $instance, $sidebar_id = '' ) {
+
+		$widget_id = $widget_obj->id;
+		if ( ! $sidebar_id ) {
+			$sidebar_id = $this->get_widget_sidebar_id( $widget_id );
+		}
 
 		/**
 		 * Filter the available locations.
-		 * Do not append new locations keys. These will be overwritten.
-		 * @todo Also get the sidebar info (if available).
 		 *
 		 * @since   1.1.3
-		 * @param   array       $locations  The array of available locations.
-		 * @param   \WP_Widget  $widget     The widget type class.
-		 * @param   array       $instance   The widget instance.
+		 * @since   1.2.0  Allow custom location + add `$widget_id` and `$sidebar_id` parameters.
+		 *
+		 * @param   array       $locations   The array of available locations.
+		 * @param   \WP_Widget  $widget_obj  The widget object.
+		 * @param   array       $instance    The widget instance.
+		 * @param   string      $widget_id   The widget ID (widget name + instance number).
+		 * @param   string      $sidebar_id  The sidebar ID where this widget is located.
 		 * @return  array  $locations  The available locations: key => label.
 		 */
-		$locations = (array) apply_filters( 'widget_subtitles_available_locations', $this->locations, $widget, $instance );
-		return array_intersect_key( $this->locations, $locations );
+		return (array) apply_filters( 'widget_subtitles_available_locations', $this->locations, $widget_obj, $instance, $widget_id, $sidebar_id );
 	}
 
 	/**
