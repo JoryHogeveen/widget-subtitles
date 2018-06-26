@@ -378,7 +378,7 @@ final class WS_Widget_Subtitles
 
 			// default.
 			$subtitle_location = $this->default_location;
-			$locations = $this->get_available_subtitle_locations( $widget_obj, $instance );
+			$locations = $this->get_available_subtitle_locations( $widget_obj, $instance, $sidebar_id );
 
 			// Get location value if it exists and is valid.
 			if ( ! empty( $instance['subtitle_location'] ) && array_key_exists( $instance['subtitle_location'], $locations ) ) {
@@ -439,7 +439,7 @@ final class WS_Widget_Subtitles
 			$subtitle .= '</' . $subtitle_element . '>';
 
 			// Add the subtitle.
-			$params[0] = $this->add_subtitle( $params[0], $subtitle, $subtitle_location );
+			$params[0] = $this->add_subtitle( $params[0], $subtitle, $subtitle_location, $widget, $sidebar_id );
 
 		} // End if().
 
