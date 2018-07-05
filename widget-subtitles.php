@@ -680,7 +680,7 @@ final class WS_Widget_Subtitles
 				'title' => __( 'Donate', self::$_domain ),
 				'description' => __( 'Buy me a coffee!', self::$_domain ),
 				'icon'  => 'dashicons-smiley',
-				'url'   => 'https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=YGPLMLU7XQ9E8&lc=NL&item_name=Widget%20Subtitles&item_number=JWPP%2dWS&currency_code=EUR&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHostedGuest',
+				'url'   => 'https://www.keraweb.nl/donate.php?for=widget-subtitles',
 			),
 			'plugins' => array(
 				'title' => __( 'Plugins', self::$_domain ),
