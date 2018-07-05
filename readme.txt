@@ -15,59 +15,14 @@ Add a customizable subtitle to your widgets
 
 This plugin adds a subtitle input field to all your widgets. You can also change the location of the subtitle and even use filters to change the subtitle output.
 
-= Filter: `widget_subtitles_element` =
-Allows you to change the HTML element for the subtitle.  
-Since  1.0  
-
-*	**Default:** `span`
-*	**Parameters:**
-	*	`string`    Default element.
-	*	`string`    Widget ID, widget name + instance number.
-	*	`string`    Sidebar ID where this widget is located. (since 1.1)
-	*	`array`     All widget data. (since 1.1)
-	*	`WP_Widget` The widget type class. (since 1.1.3)
-*	**Return:** `string` A valid HTML element.
-
-= Filter: `widget_subtitles_classes` =
-Allow filter for subtitle classes to overwrite, remove or add classes.  
-Since  1.0  
-
-*	**Default:** `array( 'widget-subtitle', 'widgetsubtitle', 'subtitle-{LOCATION}' );` *Where {LOCATION} stands for your selected location*.
-*	**Parameters:**
-	*	`string`    Default element.
-	*	`string`    Widget ID, widget name + instance number.
-	*	`string`    Sidebar ID where this widget is located. (since 1.1)
-	*	`array`     All widget data. (since 1.1)
-	*	`WP_Widget` The widget type class. (since 1.1.3)
-*	**Return:** `array` An array of CSS classes.
-
-= Filter: `widget_subtitles_default_location` =
-Sets the default location for subtitles.  
-Since  1.1.2  
-
-*	**Default:** `after-inside`
-*	**Parameters:** `string` The default subtitle location.
-*	**Return:** `string` Options: `after-inside`, `after-outside`, `before-inside`, `before-outside`.
-
-= Filter: `widget_subtitles_edit_location_capability` =
-Change the capability required to modify subtitle locations.  
-Since  1.1.2  
-
-*	**Default:** `edit_theme_options`
-*	**Parameters:** `string` The default capability.
-*	**Return:** `string` The new capability.
-
-= Filter: `widget_subtitles_available_locations` =
-Overwrites the available locations for a widget.  
-NOTE: You can currently only remove locations. New locations are not possible (yet).  
-Since  1.1.3  
-
-*	**Default:** `after-inside`, `after-outside`, `before-inside`, `before-outside`.
-*	**Parameters:**
-	*	`array`      The array of available locations.
-	*	`WP_Widget`  The widget type class.
-	*	`array`      The widget instance.
-*	**Return:** `array` Filtered list of available locations for this widget.
+= Filters =
+*   [`widget_subtitles_element`](https://github.com/JoryHogeveen/widget-subtitles/wiki#filter-widget_subtitles_element)
+*   [`widget_subtitles_classes`](https://github.com/JoryHogeveen/widget-subtitles/wiki#filter-widget_subtitles_classes)
+*   [`widget_subtitles_default_location`](https://github.com/JoryHogeveen/widget-subtitles/wiki#filter-widget_subtitles_default_location)
+*   [`widget_subtitles_edit_location_capability`](https://github.com/JoryHogeveen/widget-subtitles/wiki#filter-widget_subtitles_edit_location_capability)
+*   [`widget_subtitles_available_locations`](https://github.com/JoryHogeveen/widget-subtitles/wiki#filter-widget_subtitles_available_locations)
+*   [`widget_subtitles_add_subtitle`](https://github.com/JoryHogeveen/widget-subtitles/wiki#filter-widget_subtitles_add_subtitle)
+*   [`widget_subtitle`](https://github.com/JoryHogeveen/widget-subtitles/wiki#filter-widget_subtitle)
 
 You can use these filters inside your theme functions.php file or in a plugin.
 
