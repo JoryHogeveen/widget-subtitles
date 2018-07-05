@@ -194,9 +194,9 @@ final class WS_Widget_Subtitles
 		);
 
 		add_action( 'init', array( $this, 'load_plugin_textdomain' ) );
-		add_action( 'in_widget_form', array( $this, 'in_widget_form' ), 9, 3 );
-		add_filter( 'widget_update_callback', array( $this, 'widget_update_callback' ), 10, 4 );
-		add_filter( 'dynamic_sidebar_params', array( $this, 'dynamic_sidebar_params' ) );
+		add_action( 'in_widget_form', array( $this, 'action_in_widget_form' ), 9, 3 );
+		add_filter( 'widget_update_callback', array( $this, 'filter_widget_update_callback' ), 10, 4 );
+		add_filter( 'dynamic_sidebar_params', array( $this, 'filter_dynamic_sidebar_params' ) );
 
 		// Add links to plugins page.
 		add_action( 'plugin_row_meta', array( $this, 'action_plugin_row_meta' ), 10, 2 );
@@ -215,6 +215,7 @@ final class WS_Widget_Subtitles
 	 * Add a subtitle input field into the form.
 	 *
 	 * @since   0.1.0
+	 * @since   0.2.0  Add `action_` prefix.
 	 * @access  public
 	 *
 	 * @param   \WP_Widget  $widget
@@ -222,7 +223,7 @@ final class WS_Widget_Subtitles
 	 * @param   array       $instance
 	 * @return  null
 	 */
-	public function in_widget_form( $widget, $return, $instance ) {
+	public function action_in_widget_form( $widget, $return, $instance ) {
 
 		$instance = wp_parse_args(
 			(array) $instance,
@@ -307,6 +308,7 @@ final class WS_Widget_Subtitles
 	 * Filter the widget’s settings before saving, return false to cancel saving (keep the old settings if updating).
 	 *
 	 * @since   0.1.0
+	 * @since   0.2.0  Add `filter_` prefix.
 	 * @access  public
 	 *
 	 * @param   array       $instance
@@ -315,7 +317,7 @@ final class WS_Widget_Subtitles
 	 * param   \WP_Widget  $widget
 	 * @return  array
 	 */
-	public function widget_update_callback( $instance, $new_instance ) {
+	public function filter_widget_update_callback( $instance, $new_instance ) {
 		unset( $instance['subtitle'] );
 		unset( $instance['subtitle_location'] );
 
@@ -339,13 +341,14 @@ final class WS_Widget_Subtitles
 	 * @SuppressWarnings(PHPMD.LongVariables)
 	 *
 	 * @since   0.1.0
+	 * @since   0.2.0  Add `filter_` prefix.
 	 * @access  public
 	 *
 	 * @global  $wp_registered_widgets
 	 * @param   array  $params
 	 * @return  array
 	 */
-	public function dynamic_sidebar_params( $params ) {
+	public function filter_dynamic_sidebar_params( $params ) {
 		global $wp_registered_widgets;
 
 		if ( ! isset( $params[0]['widget_id'] ) ) {
