@@ -8,7 +8,7 @@ Add a customizable subtitle to your widgets
 [![Travis](https://secure.travis-ci.org/JoryHogeveen/widget-subtitles.png?branch=master)](http://travis-ci.org/JoryHogeveen/widget-subtitles)
 [![Code Climate](https://codeclimate.com/github/JoryHogeveen/widget-subtitles/badges/gpa.svg)](https://codeclimate.com/github/JoryHogeveen/widget-subtitles)
 [![License](https://img.shields.io/badge/license-GPL--2.0%2B-green.svg)](https://github.com/JoryHogeveen/widget-subtitles/blob/master/license.txt)
-[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=YGPLMLU7XQ9E8&lc=NL&item_name=Widget%20Subtitles&item_number=JWPP%2dWS&currency_code=EUR&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHostedGuest)
+[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.keraweb.nl/donate.php?for=widget-subtitles)
 
 ![Widget Subtitles](https://raw.githubusercontent.com/JoryHogeveen/widget-subtitles/master/.github/assets/banner-1544x500.jpg)  
 
