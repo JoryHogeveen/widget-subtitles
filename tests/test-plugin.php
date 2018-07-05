@@ -191,7 +191,7 @@ class PluginTest extends WP_UnitTestCase {
 
 		// Run tests
 		foreach ( $tests as $test ) {
-			$this->assertEquals( $test['result'], $ws->widget_update_callback( $test['start'], $test['data'] ) );
+			$this->assertEquals( $test['result'], $ws->filter_widget_update_callback( $test['start'], $test['data'] ) );
 		}
 	}
 }
