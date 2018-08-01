@@ -16,13 +16,11 @@ class PluginTest extends WP_UnitTestCase {
 
 	// Check for PHP errors
 	function test_general() {
-		$ws = ws_widget_subtitles();
-		$ws->get_links();
+		ws_widget_subtitles()->get_links();
 	}
 
 	// Check add_subtitle() method.
 	function test_add_subtitle() {
-		$ws = ws_widget_subtitles();
 
 		$tests = array(
 			array(
@@ -118,16 +116,49 @@ class PluginTest extends WP_UnitTestCase {
 				),
 				'location' => 'after-outside', // default
 			),
-		);
 
 		foreach ( $tests as $test ) {
-			$this->assertEquals( $test['result'], $ws->add_subtitle( $test['start'], $test['data'], $test['location'] ) );
+			$this->assertEquals(
+				$test['result'],
+				ws_widget_subtitles()->add_subtitle( $test['start'], $test['data'], $test['location'] )
+			);
 		}
 	}
 
-	// Check widget_update_callback() method
+	// Check get_subtitle_classes() method.
+	function test_get_subtitle_classes() {
+
+		$tests = array(
+			array(
+				'result' => array(
+					'widgetsubtitle',
+					'widget-subtitle',
+					'subtitle-after-outside',
+					'subtitle-after',
+					'subtitle-outside',
+				),
+				'location' => 'after-outside', // default
+			),
+			array(
+				'result' => array(
+					'widgetsubtitle',
+					'widget-subtitle',
+					'subtitle-custom',
+				),
+				'location' => 'custom', // default
+			),
+		);
+
+		foreach ( $tests as $test ) {
+			$this->assertEquals(
+				$test['result'],
+				ws_widget_subtitles()->get_subtitle_classes( $test['location'] )
+			);
+		}
+	}
+
+	// Check filter_widget_update_callback() method
 	function test_widget_update_callback() {
-		$ws = ws_widget_subtitles();
 
 		$tests = array(
 			array(
@@ -191,7 +222,10 @@ class PluginTest extends WP_UnitTestCase {
 
 		// Run tests
 		foreach ( $tests as $test ) {
-			$this->assertEquals( $test['result'], $ws->filter_widget_update_callback( $test['start'], $test['data'] ) );
+			$this->assertEquals(
+				$test['result'],
+				ws_widget_subtitles()->filter_widget_update_callback( $test['start'], $test['data'] )
+			);
 		}
 	}
 }
