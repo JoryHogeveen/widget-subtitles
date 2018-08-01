@@ -542,7 +542,7 @@ final class WS_Widget_Subtitles
 	 */
 	public function get_subtitle_classes( $location ) {
 		// Create subtitle classes.
-		$subtitle_classes = array( 'widget-subtitle', 'widgetsubtitle' );
+		$subtitle_classes = array( 'widgetsubtitle', 'widget-subtitle' );
 		// Add subtitle location classes.
 		$subtitle_classes[] = 'subtitle-' . $location;
 		$location_classes = explode( '-', $location );
