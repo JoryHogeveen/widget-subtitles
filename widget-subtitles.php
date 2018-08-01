@@ -271,7 +271,7 @@ final class WS_Widget_Subtitles
 				if ( ! $subtitle.val() ) {
 					$subtitle_location.parent().hide();
 				}
-				$(document).on( 'keyup', subtitle, function() {
+				$subtitle.on( 'keyup', function() {
 					if ( $(this).val() ) {
 						$subtitle_location.parent().slideDown('fast');
 					} else {
