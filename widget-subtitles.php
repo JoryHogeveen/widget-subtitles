@@ -166,16 +166,12 @@ final class WS_Widget_Subtitles
 		 * @param   string  $subtitle_location  The subtitle location (default: 'after-inside').
 		 * @return  string  Options: 'after-inside', 'after-outside', 'before-inside', 'before-outside'.
 		 */
-		$default = apply_filters( 'widget_subtitles_default_location', $this->default_location );
-		$default = explode( '-', $default );
+		$this->default_location = apply_filters( 'widget_subtitles_default_location', $this->default_location );
+		$default = explode( '-', $this->default_location );
 
 		foreach ( $default as $key => $value ) {
 			if ( isset( $loc[ $value ] ) && 2 === count( $default ) ) {
 				$default[ $key ] = $loc[ $value ];
-				continue;
-			} else {
-				$default = array( $loc['after'], $loc['inside'] );
-				break;
 			}
 		}
 
