@@ -237,19 +237,12 @@ final class WS_Widget_Subtitles
 			<input class="widefat" id="<?php echo $widget->get_field_id( 'subtitle' ); ?>" name="<?php echo $widget->get_field_name( 'subtitle' ); ?>" type="text" value="<?php echo esc_attr( strip_tags( $instance['subtitle'] ) ); ?>"/>
 		</p>
 
-		<?php
-		$locations = array();
-
-		if ( $can_edit_location ) {
-			$locations = $this->get_available_subtitle_locations( $widget, $instance );
-		}
-
-		if ( 1 < count( $locations ) ) {
-		?>
+		<?php if ( $can_edit_location ) { ?>
 		<p>
 			<label for="<?php echo $widget->get_field_id( 'subtitle_location' ); ?>"><?php esc_html_e( 'Subtitle location', self::$_domain ); ?>:</label>
 			<select name="<?php echo $widget->get_field_name( 'subtitle_location' ); ?>" id="<?php echo $widget->get_field_id( 'subtitle_location' ); ?>">
 			<?php
+			$locations = $this->get_available_subtitle_locations( $widget, $instance );
 			foreach ( (array) $locations as $location_key => $location_name ) {
 				?>
 				<option value="<?php echo $location_key; ?>" <?php selected( $instance['subtitle_location'], $location_key, true ); ?>>
