@@ -116,6 +116,21 @@ class PluginTest extends WP_UnitTestCase {
 				),
 				'location' => 'after-outside', // default
 			),
+			array(
+				'start'  => array(
+					'after_title' => '</div>',
+					'before_title' => '<div class="title">',
+				),
+				'data'   => '<div>SUBTITLE</div>',
+				'result' => array(
+					'after_title' => '</div>',
+					'before_title' => '<div class="title"><div>SUBTITLE</div> test ',
+				),
+				'location' => 'custom', // default
+			),
+		);
+
+		add_filter( 'widget_subtitles_add_subtitle', array( $this, 'filter_widget_subtitles_add_subtitle' ), 10, 3 );
 
 		foreach ( $tests as $test ) {
 			$this->assertEquals(
@@ -123,6 +138,13 @@ class PluginTest extends WP_UnitTestCase {
 				ws_widget_subtitles()->add_subtitle( $test['start'], $test['data'], $test['location'] )
 			);
 		}
+	}
+
+	function filter_widget_subtitles_add_subtitle( $params, $subtitle, $subtitle_location ) {
+		if ( 'custom' === $subtitle_location ) {
+			$params['before_title'] = $params['before_title'] . $subtitle . ' test ';
+		}
+		return $params;
 	}
 
 	// Check get_subtitle_classes() method.
