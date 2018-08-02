@@ -3,7 +3,7 @@
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Widget_Subtitles
  * @since   0.1.0
- * @version 1.1.4.1
+ * @version 1.2.0
  * @licence GPL-2.0+
  * @link    https://github.com/JoryHogeveen/widget-subtitles
  *
@@ -11,7 +11,7 @@
  * Plugin Name:       Widget Subtitles
  * Plugin URI:        https://wordpress.org/plugins/widget-subtitles/
  * Description:       Add a customizable subtitle to your widgets
- * Version:           1.1.4.1
+ * Version:           1.2
  * Author:            Jory Hogeveen
  * Author URI:        http://www.keraweb.nl
  * Text Domain:       widget-subtitles
@@ -50,7 +50,7 @@ if ( ! class_exists( 'WS_Widget_Subtitles' ) ) {
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Widget_Subtitles
  * @since   0.1.0
- * @version 1.1.4.1
+ * @version 1.2.0
  */
 final class WS_Widget_Subtitles
 {
@@ -166,16 +166,12 @@ final class WS_Widget_Subtitles
 		 * @param   string  $subtitle_location  The subtitle location (default: 'after-inside').
 		 * @return  string  Options: 'after-inside', 'after-outside', 'before-inside', 'before-outside'.
 		 */
-		$default = apply_filters( 'widget_subtitles_default_location', $this->default_location );
-		$default = explode( '-', $default );
+		$this->default_location = apply_filters( 'widget_subtitles_default_location', $this->default_location );
+		$default = explode( '-', $this->default_location );
 
 		foreach ( $default as $key => $value ) {
 			if ( isset( $loc[ $value ] ) && 2 === count( $default ) ) {
 				$default[ $key ] = $loc[ $value ];
-				continue;
-			} else {
-				$default = array( $loc['after'], $loc['inside'] );
-				break;
 			}
 		}
 
@@ -194,9 +190,9 @@ final class WS_Widget_Subtitles
 		);
 
 		add_action( 'init', array( $this, 'load_plugin_textdomain' ) );
-		add_action( 'in_widget_form', array( $this, 'in_widget_form' ), 9, 3 );
-		add_filter( 'widget_update_callback', array( $this, 'widget_update_callback' ), 10, 4 );
-		add_filter( 'dynamic_sidebar_params', array( $this, 'dynamic_sidebar_params' ) );
+		add_action( 'in_widget_form', array( $this, 'action_in_widget_form' ), 9, 3 );
+		add_filter( 'widget_update_callback', array( $this, 'filter_widget_update_callback' ), 10, 4 );
+		add_filter( 'dynamic_sidebar_params', array( $this, 'filter_dynamic_sidebar_params' ) );
 
 		// Add links to plugins page.
 		add_action( 'plugin_row_meta', array( $this, 'action_plugin_row_meta' ), 10, 2 );
@@ -215,6 +211,7 @@ final class WS_Widget_Subtitles
 	 * Add a subtitle input field into the form.
 	 *
 	 * @since   0.1.0
+	 * @since   1.2.0  Add `action_` prefix.
 	 * @access  public
 	 *
 	 * @param   \WP_Widget  $widget
@@ -222,7 +219,7 @@ final class WS_Widget_Subtitles
 	 * @param   array       $instance
 	 * @return  null
 	 */
-	public function in_widget_form( $widget, $return, $instance ) {
+	public function action_in_widget_form( $widget, $return, $instance ) {
 
 		$instance = wp_parse_args(
 			(array) $instance,
@@ -240,19 +237,12 @@ final class WS_Widget_Subtitles
 			<input class="widefat" id="<?php echo $widget->get_field_id( 'subtitle' ); ?>" name="<?php echo $widget->get_field_name( 'subtitle' ); ?>" type="text" value="<?php echo esc_attr( strip_tags( $instance['subtitle'] ) ); ?>"/>
 		</p>
 
-		<?php
-		$locations = array();
-
-		if ( $can_edit_location ) {
-			$locations = $this->get_available_subtitle_locations( $widget, $instance );
-		}
-
-		if ( 1 < count( $locations ) ) {
-		?>
+		<?php if ( $can_edit_location ) { ?>
 		<p>
 			<label for="<?php echo $widget->get_field_id( 'subtitle_location' ); ?>"><?php esc_html_e( 'Subtitle location', self::$_domain ); ?>:</label>
 			<select name="<?php echo $widget->get_field_name( 'subtitle_location' ); ?>" id="<?php echo $widget->get_field_id( 'subtitle_location' ); ?>">
 			<?php
+			$locations = $this->get_available_subtitle_locations( $widget, $instance );
 			foreach ( (array) $locations as $location_key => $location_name ) {
 				?>
 				<option value="<?php echo $location_key; ?>" <?php selected( $instance['subtitle_location'], $location_key, true ); ?>>
@@ -281,7 +271,7 @@ final class WS_Widget_Subtitles
 				if ( ! $subtitle.val() ) {
 					$subtitle_location.parent().hide();
 				}
-				$(document).on( 'keyup', subtitle, function() {
+				$subtitle.on( 'keyup', function() {
 					if ( $(this).val() ) {
 						$subtitle_location.parent().slideDown('fast');
 					} else {
@@ -307,6 +297,7 @@ final class WS_Widget_Subtitles
 	 * Filter the widget’s settings before saving, return false to cancel saving (keep the old settings if updating).
 	 *
 	 * @since   0.1.0
+	 * @since   1.2.0  Add `filter_` prefix.
 	 * @access  public
 	 *
 	 * @param   array       $instance
@@ -315,15 +306,16 @@ final class WS_Widget_Subtitles
 	 * param   \WP_Widget  $widget
 	 * @return  array
 	 */
-	public function widget_update_callback( $instance, $new_instance ) {
+	public function filter_widget_update_callback( $instance, $new_instance ) {
 		unset( $instance['subtitle'] );
 		unset( $instance['subtitle_location'] );
 
 		if ( ! empty( $new_instance['subtitle'] ) ) {
 			$instance['subtitle'] = esc_html( strip_tags( $new_instance['subtitle'] ) );
 
-			if ( ! empty( $new_instance['subtitle_location'] ) && array_key_exists( $new_instance['subtitle_location'], $this->locations ) ) {
-				$instance['subtitle_location'] = strip_tags( $new_instance['subtitle_location'] );
+			if ( ! empty( $new_instance['subtitle_location'] ) && is_string( $new_instance['subtitle_location'] ) ) {
+				//&& array_key_exists( $new_instance['subtitle_location'], $this->locations )
+				$instance['subtitle_location'] = esc_attr( strip_tags( $new_instance['subtitle_location'] ) );
 			}
 		}
 
@@ -338,13 +330,14 @@ final class WS_Widget_Subtitles
 	 * @SuppressWarnings(PHPMD.LongVariables)
 	 *
 	 * @since   0.1.0
+	 * @since   1.2.0  Add `filter_` prefix.
 	 * @access  public
 	 *
 	 * @global  $wp_registered_widgets
 	 * @param   array  $params
 	 * @return  array
 	 */
-	public function dynamic_sidebar_params( $params ) {
+	public function filter_dynamic_sidebar_params( $params ) {
 		global $wp_registered_widgets;
 
 		if ( ! isset( $params[0]['widget_id'] ) ) {
@@ -378,7 +371,7 @@ final class WS_Widget_Subtitles
 
 			// default.
 			$subtitle_location = $this->default_location;
-			$locations = $this->get_available_subtitle_locations( $widget_obj, $instance );
+			$locations = $this->get_available_subtitle_locations( $widget_obj, $instance, $sidebar_id );
 
 			// Get location value if it exists and is valid.
 			if ( ! empty( $instance['subtitle_location'] ) && array_key_exists( $instance['subtitle_location'], $locations ) ) {
@@ -413,8 +406,8 @@ final class WS_Widget_Subtitles
 			 * @param  string      $widget_id         The widget ID (widget name + instance number).
 			 * @param  string      $sidebar_id        The sidebar ID where this widget is located.
 			 * @param  array       $widget            All widget data.
-			 * @param  \WP_Widget  $widget_obj  The Widget object.
-			 * @return array   An array of CSS classes.
+			 * @param  \WP_Widget  $widget_obj        The Widget object.
+			 * @return array  An array of CSS classes.
 			 */
 			$subtitle_classes = apply_filters( 'widget_subtitles_classes', $subtitle_classes, $widget_id, $sidebar_id, $widget, $widget_obj );
 
@@ -423,11 +416,24 @@ final class WS_Widget_Subtitles
 
 			// Start the output.
 			$subtitle = '<' . $subtitle_element . ' class="' . $subtitle_classes . '">';
-			$subtitle .= $instance['subtitle'];
+			/**
+			 * Filters the widget subtitle.
+			 *
+			 * @since  1.2.0
+			 *
+			 * @param  string      $subtitle    The widget subtitle.
+			 * @param  array       $instance    Array of settings for the current widget.
+			 * @param  string      $widget_id   The widget ID (widget name + instance number).
+			 * @param  string      $sidebar_id  The sidebar ID where this widget is located.
+			 * @param  array       $widget      All widget data.
+			 * @param  \WP_Widget  $widget_obj  The Widget object.
+			 * @return string  The new subtitle.
+			 */
+			$subtitle .= apply_filters( 'widget_subtitle', $instance['subtitle'], $instance, $widget_id, $sidebar_id, $widget, $widget_obj );
 			$subtitle .= '</' . $subtitle_element . '>';
 
 			// Add the subtitle.
-			$params[0] = $this->add_subtitle( $params[0], $subtitle, $subtitle_location );
+			$params[0] = $this->add_subtitle( $params[0], $subtitle, $subtitle_location, $widget, $sidebar_id );
 
 		} // End if().
 
@@ -438,13 +444,16 @@ final class WS_Widget_Subtitles
 	 * Add a subtitle in the widget parameters.
 	 *
 	 * @since   1.1.2
+	 * @since   1.2.0  Added optional `$widget_obj` and `$sidebar_id` parameters.
 	 * @access  public
-	 * @param   array   $params             Widget parameters.
-	 * @param   string  $subtitle           The subtitle, may contain HTML.
-	 * @param   string  $subtitle_location  The subtitle location.
+	 * @param   array       $params             Widget parameters.
+	 * @param   string      $subtitle           The subtitle, may contain HTML.
+	 * @param   string      $subtitle_location  The subtitle location.
+	 * @param   \WP_Widget  $widget_obj         The Widget object.
+	 * @param   string      $sidebar_id         The sidebar ID where this widget is located.
 	 * @return  array
 	 */
-	public function add_subtitle( $params, $subtitle, $subtitle_location = '' ) {
+	public function add_subtitle( $params, $subtitle, $subtitle_location = '', $widget_obj = null, $sidebar_id = '' ) {
 
 		if ( empty( $subtitle_location ) ) {
 			$subtitle_location = $this->default_location;
@@ -477,6 +486,22 @@ final class WS_Widget_Subtitles
 			case 'after-outside':
 				$params['after_title'] = $params['after_title'] . $subtitle;
 				break;
+
+			default:
+				/**
+				 * Add subtitle at a custom location
+				 *
+				 * @since  1.2.0
+				 *
+				 * @param  array       $params             Widget sidebar parameters from `dynamic_sidebar_params` filter.
+				 * @param  string      $subtitle           The subtitle.
+				 * @param  string      $subtitle_location  The selected subtitle location.
+				 * @param  \WP_Widget  $widget_obj         The widget object.
+				 * @param  string      $sidebar_id         The sidebar ID where this widget is located.
+				 * @return array
+				 */
+				$params = apply_filters( 'widget_subtitles_add_subtitle', $params, $subtitle, $subtitle_location, $widget_obj, $sidebar_id );
+				break;
 		}
 
 		return $params;
@@ -486,15 +511,17 @@ final class WS_Widget_Subtitles
 	 * Get the sidebar ID related to a widget ID.
 	 *
 	 * @since   1.1.1
+	 * @since   1.2.0   Make use of `wp_get_sidebars_widgets()`.
 	 * @access  public
 	 * @param   string  $widget_id  The widget identifier.
 	 * @return  string
 	 */
 	public function get_widget_sidebar_id( $widget_id ) {
-		global $_wp_sidebars_widgets;
+		//global $_wp_sidebars_widgets;
+		$sidebars_widgets = wp_get_sidebars_widgets();
 		$sidebar_id = '';
-		if ( is_array( $_wp_sidebars_widgets ) ) {
-			foreach ( $_wp_sidebars_widgets as $key => $widgets ) {
+		if ( is_array( $sidebars_widgets ) ) {
+			foreach ( $sidebars_widgets as $key => $widgets ) {
 				if ( is_array( $widgets ) && in_array( (string) $widget_id, array_map( 'strval', $widgets ), true ) ) {
 					// Found!
 					$sidebar_id = $key;
@@ -515,12 +542,16 @@ final class WS_Widget_Subtitles
 	 */
 	public function get_subtitle_classes( $location ) {
 		// Create subtitle classes.
-		$subtitle_classes = array( 'widget-subtitle', 'widgetsubtitle' );
+		$subtitle_classes = array( 'widgetsubtitle', 'widget-subtitle' );
 		// Add subtitle location classes.
 		$subtitle_classes[] = 'subtitle-' . $location;
 		$location_classes = explode( '-', $location );
-		foreach ( $location_classes as $location_class ) {
-			$subtitle_classes[] = 'subtitle-' . $location_class;
+		// Prevent duplicated classes.
+		if ( 1 < count( $location_classes ) ) {
+			// Add location part classes.
+			foreach ( $location_classes as $location_class ) {
+				$subtitle_classes[] = 'subtitle-' . $location_class;
+			}
 		}
 		return $subtitle_classes;
 	}
@@ -529,25 +560,34 @@ final class WS_Widget_Subtitles
 	 * Get the available locations for a widget.
 	 *
 	 * @since   1.1.3
-	 * @param   \WP_Widget  $widget
+	 * @since   1.2.0  Optional `$sidebar_id` parameter.
+	 * @param   \WP_Widget  $widget_obj
 	 * @param   array       $instance
+	 * @param   string      $sidebar_id  The sidebar ID where this widget is located.
 	 * @return  array
 	 */
-	public function get_available_subtitle_locations( $widget, $instance ) {
+	public function get_available_subtitle_locations( $widget_obj, $instance, $sidebar_id = '' ) {
+
+		$widget_id = $widget_obj->id;
+		if ( ! $sidebar_id ) {
+			$sidebar_id = $this->get_widget_sidebar_id( $widget_id );
+		}
 
 		/**
 		 * Filter the available locations.
-		 * Do not append new locations keys. These will be overwritten.
-		 * @todo Also get the sidebar info (if available).
+		 * Note: Location keys must be strings!
 		 *
 		 * @since   1.1.3
-		 * @param   array       $locations  The array of available locations.
-		 * @param   \WP_Widget  $widget     The widget type class.
-		 * @param   array       $instance   The widget instance.
-		 * @return  array  $locations  The available locations: key => label.
+		 * @since   1.2.0  Allow custom location + add `$widget_id` and `$sidebar_id` parameters.
+		 *
+		 * @param   string[]    $locations   The array of available locations.
+		 * @param   \WP_Widget  $widget_obj  The widget object.
+		 * @param   array       $instance    The widget instance.
+		 * @param   string      $widget_id   The widget ID (widget name + instance number).
+		 * @param   string      $sidebar_id  The sidebar ID where this widget is located.
+		 * @return  string[]  $locations  The available locations: key => label.
 		 */
-		$locations = (array) apply_filters( 'widget_subtitles_available_locations', $this->locations, $widget, $instance );
-		return array_intersect_key( $this->locations, $locations );
+		return (array) apply_filters( 'widget_subtitles_available_locations', $this->locations, $widget_obj, $instance, $widget_id, $sidebar_id );
 	}
 
 	/**
@@ -629,7 +669,7 @@ final class WS_Widget_Subtitles
 				'title' => __( 'Donate', self::$_domain ),
 				'description' => __( 'Buy me a coffee!', self::$_domain ),
 				'icon'  => 'dashicons-smiley',
-				'url'   => 'https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=YGPLMLU7XQ9E8&lc=NL&item_name=Widget%20Subtitles&item_number=JWPP%2dWS&currency_code=EUR&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHostedGuest',
+				'url'   => 'https://www.keraweb.nl/donate.php?for=widget-subtitles',
 			),
 			'plugins' => array(
 				'title' => __( 'Plugins', self::$_domain ),
