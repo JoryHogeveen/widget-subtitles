@@ -3,7 +3,7 @@
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Widget_Subtitles
  * @since   0.1.0
- * @version 1.2.0-dev
+ * @version 1.2.0
  * @licence GPL-2.0+
  * @link    https://github.com/JoryHogeveen/widget-subtitles
  *
@@ -11,7 +11,7 @@
  * Plugin Name:       Widget Subtitles
  * Plugin URI:        https://wordpress.org/plugins/widget-subtitles/
  * Description:       Add a customizable subtitle to your widgets
- * Version:           1.2-rc1
+ * Version:           1.2
  * Author:            Jory Hogeveen
  * Author URI:        http://www.keraweb.nl
  * Text Domain:       widget-subtitles
@@ -211,7 +211,7 @@ final class WS_Widget_Subtitles
 	 * Add a subtitle input field into the form.
 	 *
 	 * @since   0.1.0
-	 * @since   0.2.0  Add `action_` prefix.
+	 * @since   1.2.0  Add `action_` prefix.
 	 * @access  public
 	 *
 	 * @param   \WP_Widget  $widget
@@ -297,7 +297,7 @@ final class WS_Widget_Subtitles
 	 * Filter the widget’s settings before saving, return false to cancel saving (keep the old settings if updating).
 	 *
 	 * @since   0.1.0
-	 * @since   0.2.0  Add `filter_` prefix.
+	 * @since   1.2.0  Add `filter_` prefix.
 	 * @access  public
 	 *
 	 * @param   array       $instance
@@ -330,7 +330,7 @@ final class WS_Widget_Subtitles
 	 * @SuppressWarnings(PHPMD.LongVariables)
 	 *
 	 * @since   0.1.0
-	 * @since   0.2.0  Add `filter_` prefix.
+	 * @since   1.2.0  Add `filter_` prefix.
 	 * @access  public
 	 *
 	 * @global  $wp_registered_widgets
