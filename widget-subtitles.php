@@ -311,7 +311,7 @@ final class WS_Widget_Subtitles
 		unset( $instance['subtitle_location'] );
 
 		if ( ! empty( $new_instance['subtitle'] ) ) {
-			$instance['subtitle'] = esc_html( strip_tags( $new_instance['subtitle'] ) );
+			$instance['subtitle'] = sanitize_text_field( $new_instance['subtitle'] );
 
 			if ( ! empty( $new_instance['subtitle_location'] ) && is_string( $new_instance['subtitle_location'] ) ) {
 				//&& array_key_exists( $new_instance['subtitle_location'], $this->locations )
