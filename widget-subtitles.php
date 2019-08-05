@@ -315,7 +315,7 @@ final class WS_Widget_Subtitles
 
 			if ( ! empty( $new_instance['subtitle_location'] ) && is_string( $new_instance['subtitle_location'] ) ) {
 				//&& array_key_exists( $new_instance['subtitle_location'], $this->locations )
-				$instance['subtitle_location'] = esc_attr( strip_tags( $new_instance['subtitle_location'] ) );
+				$instance['subtitle_location'] = esc_attr( wp_strip_all_tags( $new_instance['subtitle_location'] ) );
 			}
 		}
 
