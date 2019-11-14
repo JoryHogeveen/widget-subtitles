@@ -3,7 +3,7 @@
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Widget_Subtitles
  * @since   0.1.0
- * @version 1.2.0
+ * @version 1.2.1
  * @licence GPL-2.0+
  * @link    https://github.com/JoryHogeveen/widget-subtitles
  *
@@ -11,7 +11,7 @@
  * Plugin Name:       Widget Subtitles
  * Plugin URI:        https://wordpress.org/plugins/widget-subtitles/
  * Description:       Add a customizable subtitle to your widgets
- * Version:           1.2
+ * Version:           1.2.1
  * Author:            Jory Hogeveen
  * Author URI:        http://www.keraweb.nl
  * Text Domain:       widget-subtitles
@@ -50,7 +50,7 @@ if ( ! class_exists( 'WS_Widget_Subtitles' ) ) {
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Widget_Subtitles
  * @since   0.1.0
- * @version 1.2.0
+ * @version 1.2.1
  */
 final class WS_Widget_Subtitles
 {
@@ -167,26 +167,25 @@ final class WS_Widget_Subtitles
 		 * @return  string  Options: 'after-inside', 'after-outside', 'before-inside', 'before-outside'.
 		 */
 		$this->default_location = apply_filters( 'widget_subtitles_default_location', $this->default_location );
-		$default = explode( '-', $this->default_location );
 
+		$default = explode( '-', $this->default_location );
 		foreach ( $default as $key => $value ) {
 			if ( isset( $loc[ $value ] ) && 2 === count( $default ) ) {
 				$default[ $key ] = $loc[ $value ];
 			}
 		}
-
 		$default = implode( ' - ', $default );
 
 		$this->locations = array(
-			'' => __( 'Default', self::$_domain ) . ' (' . $default . ')',
+			''               => __( 'Default', self::$_domain ) . ' (' . $default . ')',
 			// before title, outside title element.
 			'before-outside' => $loc['before'] . ' - ' . $loc['outside'],
 			// before title, inside title element
-			'before-inside' => $loc['before'] . ' - ' . $loc['inside'],
+			'before-inside'  => $loc['before'] . ' - ' . $loc['inside'],
 			// after title, outside title element
-			'after-outside' => $loc['after'] . ' - ' . $loc['outside'],
+			'after-outside'  => $loc['after'] . ' - ' . $loc['outside'],
 			// after title, inside title element
-			'after-inside' => $loc['after'] . ' - ' . $loc['inside'],
+			'after-inside'   => $loc['after'] . ' - ' . $loc['inside'],
 		);
 
 		add_action( 'init', array( $this, 'load_plugin_textdomain' ) );
@@ -259,12 +258,12 @@ final class WS_Widget_Subtitles
 
 		<script type="text/javascript">
 			;( function( $ ) {
-				var title = '#<?php echo $widget->get_field_id( 'title' ); ?>',
-					subtitle = '#<?php echo $widget->get_field_id( 'subtitle' ); ?>',
-					$title = $( title ),
+				var title     = '#<?php echo $widget->get_field_id( 'title' ); ?>',
+					subtitle  = '#<?php echo $widget->get_field_id( 'subtitle' ); ?>',
+					$title    = $( title ),
 					$subtitle = $( subtitle );
 				<?php if ( $can_edit_location ) { ?>
-				var subtitle_location = '#<?php echo $widget->get_field_id( 'subtitle_location' ); ?>',
+				var subtitle_location  = '#<?php echo $widget->get_field_id( 'subtitle_location' ); ?>',
 					$subtitle_location = $( subtitle_location );
 
 				// show/hide subtitle location input.
@@ -298,6 +297,7 @@ final class WS_Widget_Subtitles
 	 *
 	 * @since   0.1.0
 	 * @since   1.2.0  Add `filter_` prefix.
+	 * @since   1.2.1  sanitize_text_field() to ensure same validation as default widget title.
 	 * @access  public
 	 *
 	 * @param   array       $instance
@@ -311,11 +311,11 @@ final class WS_Widget_Subtitles
 		unset( $instance['subtitle_location'] );
 
 		if ( ! empty( $new_instance['subtitle'] ) ) {
-			$instance['subtitle'] = esc_html( strip_tags( $new_instance['subtitle'] ) );
+			$instance['subtitle'] = sanitize_text_field( $new_instance['subtitle'] );
 
 			if ( ! empty( $new_instance['subtitle_location'] ) && is_string( $new_instance['subtitle_location'] ) ) {
 				//&& array_key_exists( $new_instance['subtitle_location'], $this->locations )
-				$instance['subtitle_location'] = esc_attr( strip_tags( $new_instance['subtitle_location'] ) );
+				$instance['subtitle_location'] = esc_attr( wp_strip_all_tags( $new_instance['subtitle_location'] ) );
 			}
 		}
 
@@ -369,8 +369,9 @@ final class WS_Widget_Subtitles
 
 			$sidebar_id = $this->get_widget_sidebar_id( $widget_id );
 
-			// default.
+			// Default.
 			$subtitle_location = $this->default_location;
+			// Available.
 			$locations = $this->get_available_subtitle_locations( $widget_obj, $instance, $sidebar_id );
 
 			// Get location value if it exists and is valid.
@@ -519,7 +520,7 @@ final class WS_Widget_Subtitles
 	public function get_widget_sidebar_id( $widget_id ) {
 		//global $_wp_sidebars_widgets;
 		$sidebars_widgets = wp_get_sidebars_widgets();
-		$sidebar_id = '';
+		$sidebar_id       = '';
 		if ( is_array( $sidebars_widgets ) ) {
 			foreach ( $sidebars_widgets as $key => $widgets ) {
 				if ( is_array( $widgets ) && in_array( (string) $widget_id, array_map( 'strval', $widgets ), true ) ) {
@@ -545,6 +546,7 @@ final class WS_Widget_Subtitles
 		$subtitle_classes = array( 'widgetsubtitle', 'widget-subtitle' );
 		// Add subtitle location classes.
 		$subtitle_classes[] = 'subtitle-' . $location;
+		// Convert to array.
 		$location_classes = explode( '-', $location );
 		// Prevent duplicated classes.
 		if ( 1 < count( $location_classes ) ) {
@@ -602,8 +604,10 @@ final class WS_Widget_Subtitles
 	public function action_plugin_row_meta( $links, $file ) {
 		if ( self::$_basename === $file ) {
 			foreach ( $this->get_links() as $id => $link ) {
-				$icon = '<span class="dashicons ' . $link['icon'] . '" style="font-size: inherit; line-height: inherit; display: inline; vertical-align: text-top;"></span>';
+				$style = 'font-size: inherit; line-height: inherit; display: inline; vertical-align: text-top;';
+				$icon  = '<span class="dashicons ' . $link['icon'] . '" style="' . $style . '"></span>';
 				$title = $icon . ' ' . esc_html( $link['title'] );
+
 				$links[ $id ] = '<a href="' . esc_url( $link['url'] ) . '" target="_blank">' . $title . '</a>';
 			}
 		}
@@ -623,59 +627,59 @@ final class WS_Widget_Subtitles
 		}
 
 		$links = array(
-			'support' => array(
-				'title' => __( 'Support', self::$_domain ),
+			'support'   => array(
+				'title'       => __( 'Support', self::$_domain ),
 				'description' => __( 'Need support?', self::$_domain ),
-				'icon'  => 'dashicons-sos',
-				'url'   => 'https://wordpress.org/support/plugin/widget-subtitles/',
+				'icon'        => 'dashicons-sos',
+				'url'         => 'https://wordpress.org/support/plugin/widget-subtitles/',
 			),
-			'slack' => array(
-				'title' => __( 'Slack', self::$_domain ),
+			'slack'     => array(
+				'title'       => __( 'Slack', self::$_domain ),
 				'description' => __( 'Quick help via Slack', self::$_domain ),
-				'icon'  => 'dashicons-format-chat',
-				'url'   => 'https://keraweb.slack.com/messages/plugin-ws/',
+				'icon'        => 'dashicons-format-chat',
+				'url'         => 'https://keraweb.slack.com/messages/plugin-ws/',
 			),
-			'review' => array(
-				'title' => __( 'Review', self::$_domain ),
+			'review'    => array(
+				'title'       => __( 'Review', self::$_domain ),
 				'description' => __( 'Give 5 stars on WordPress.org!', self::$_domain ),
-				'icon'  => 'dashicons-star-filled',
-				'url'   => 'https://wordpress.org/support/plugin/widget-subtitles/reviews/',
+				'icon'        => 'dashicons-star-filled',
+				'url'         => 'https://wordpress.org/support/plugin/widget-subtitles/reviews/',
 			),
 			'translate' => array(
-				'title' => __( 'Translate', self::$_domain ),
+				'title'       => __( 'Translate', self::$_domain ),
 				'description' => __( 'Help translating this plugin!', self::$_domain ),
-				'icon'  => 'dashicons-translation',
-				'url'   => 'https://translate.wordpress.org/projects/wp-plugins/widget-subtitles',
+				'icon'        => 'dashicons-translation',
+				'url'         => 'https://translate.wordpress.org/projects/wp-plugins/widget-subtitles',
 			),
-			'issue' => array(
-				'title' => __( 'Report issue', self::$_domain ),
+			'issue'     => array(
+				'title'       => __( 'Report issue', self::$_domain ),
 				'description' => __( 'Have ideas or a bug report?', self::$_domain ),
-				'icon'  => 'dashicons-lightbulb',
-				'url'   => 'https://github.com/JoryHogeveen/widget-subtitles/issues',
+				'icon'        => 'dashicons-lightbulb',
+				'url'         => 'https://github.com/JoryHogeveen/widget-subtitles/issues',
 			),
-			'docs' => array(
-				'title' => __( 'Documentation', self::$_domain ),
+			'docs'      => array(
+				'title'       => __( 'Documentation', self::$_domain ),
 				'description' => __( 'Documentation', self::$_domain ),
-				'icon'  => 'dashicons-book-alt',
-				'url'   => 'https://github.com/JoryHogeveen/widget-subtitles/', //wiki
+				'icon'        => 'dashicons-book-alt',
+				'url'         => 'https://github.com/JoryHogeveen/widget-subtitles/', //wiki
 			),
-			'github' => array(
-				'title' => __( 'GitHub', self::$_domain ),
+			'github'    => array(
+				'title'       => __( 'GitHub', self::$_domain ),
 				'description' => __( 'Follow and/or contribute on GitHub', self::$_domain ),
-				'icon'  => 'dashicons-editor-code',
-				'url'   => 'https://github.com/JoryHogeveen/widget-subtitles/tree/dev',
+				'icon'        => 'dashicons-editor-code',
+				'url'         => 'https://github.com/JoryHogeveen/widget-subtitles/tree/dev',
 			),
-			'donate' => array(
-				'title' => __( 'Donate', self::$_domain ),
+			'donate'    => array(
+				'title'       => __( 'Donate', self::$_domain ),
 				'description' => __( 'Buy me a coffee!', self::$_domain ),
-				'icon'  => 'dashicons-smiley',
-				'url'   => 'https://www.keraweb.nl/donate.php?for=widget-subtitles',
+				'icon'        => 'dashicons-smiley',
+				'url'         => 'https://www.keraweb.nl/donate.php?for=widget-subtitles',
 			),
-			'plugins' => array(
-				'title' => __( 'Plugins', self::$_domain ),
+			'plugins'   => array(
+				'title'       => __( 'Plugins', self::$_domain ),
 				'description' => __( 'Check out my other WordPress plugins', self::$_domain ),
-				'icon'  => 'dashicons-admin-plugins',
-				'url'   => 'https://profiles.wordpress.org/keraweb/#content-plugins',
+				'icon'        => 'dashicons-admin-plugins',
+				'url'         => 'https://profiles.wordpress.org/keraweb/#content-plugins',
 			),
 		);
 

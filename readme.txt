@@ -3,9 +3,9 @@ Contributors: keraweb
 Donate link: https://www.keraweb.nl/donate.php?for=widget-subtitles
 Tags: widget, widget subtitle, subtitle, subtitles, sub title, sidebar
 Requires at least: 3.0
-Tested up to: 5.0
+Tested up to: 5.3
 Requires PHP: 5.2.4
-Stable tag: 1.2
+Stable tag: 1.2.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -41,6 +41,13 @@ Or search for "Widget Subtitles" via your plugins menu.
 2. Frontend subtitle example (after title - inside heading)
 
 == Changelog ==
+
+= 1.2.1 =
+
+*	**Enhancement:** Improve updating subtitles to reflect WordPress default title.
+*	**Compatibility:** Tested with WordPress 5.3.
+
+Detailed info: [PR on GitHub](https://github.com/JoryHogeveen/widget-subtitles/pull/12)
 
 = 1.2 =
 
