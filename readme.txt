@@ -42,6 +42,13 @@ Or search for "Widget Subtitles" via your plugins menu.
 
 == Changelog ==
 
+= 1.2.1 =
+
+*	**Enhancement:** Improve updating subtitles to reflect WordPress default title.
+*	**Compatibility:** Tested with WordPress 5.3.
+
+Detailed info: [PR on GitHub](https://github.com/JoryHogeveen/widget-subtitles/pull/12)
+
 = 1.2 =
 
 *	**Feature:** New filter: `widget_subtitle` to change the subtitle for a widget. Similar to WP's `widget_title`.
