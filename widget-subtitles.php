@@ -3,7 +3,7 @@
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Widget_Subtitles
  * @since   0.1.0
- * @version 1.2.0
+ * @version 1.2.1
  * @licence GPL-2.0+
  * @link    https://github.com/JoryHogeveen/widget-subtitles
  *
@@ -11,7 +11,7 @@
  * Plugin Name:       Widget Subtitles
  * Plugin URI:        https://wordpress.org/plugins/widget-subtitles/
  * Description:       Add a customizable subtitle to your widgets
- * Version:           1.2
+ * Version:           1.2.1
  * Author:            Jory Hogeveen
  * Author URI:        http://www.keraweb.nl
  * Text Domain:       widget-subtitles
@@ -50,7 +50,7 @@ if ( ! class_exists( 'WS_Widget_Subtitles' ) ) {
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Widget_Subtitles
  * @since   0.1.0
- * @version 1.2.0
+ * @version 1.2.1
  */
 final class WS_Widget_Subtitles
 {
@@ -297,6 +297,7 @@ final class WS_Widget_Subtitles
 	 *
 	 * @since   0.1.0
 	 * @since   1.2.0  Add `filter_` prefix.
+	 * @since   1.2.1  sanitize_text_field() to ensure same validation as default widget title.
 	 * @access  public
 	 *
 	 * @param   array       $instance
