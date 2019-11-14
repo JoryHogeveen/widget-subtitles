@@ -3,7 +3,7 @@ Contributors: keraweb
 Donate link: https://www.keraweb.nl/donate.php?for=widget-subtitles
 Tags: widget, widget subtitle, subtitle, subtitles, sub title, sidebar
 Requires at least: 3.0
-Tested up to: 5.0
+Tested up to: 5.3
 Requires PHP: 5.2.4
 Stable tag: 1.2
 License: GPLv2 or later
